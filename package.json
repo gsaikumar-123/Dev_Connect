@@ -9,10 +9,10 @@
   "license": "ISC",
   "author": "Sai Kumar",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start" : "node app.js",
-    "dev" : "nodemon app.js"
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
   },
   "dependencies": {
     "express": "^4.21.2"
