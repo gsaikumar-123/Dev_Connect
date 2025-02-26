@@ -7,7 +7,6 @@ app.use(express.json());
 
 app.post("/signup",async (req,res)=>{
     const user = new User(req.body);
-
     try{
         await user.save();
         res.send("User created");
@@ -17,7 +16,48 @@ app.post("/signup",async (req,res)=>{
     }
 });
 
+app.get("/user", async (res,req)=>{
+    const userEmail = req.body.emailId;
+    try{
+        const users = await User.find({emailId : userEmail});
+        if(users.length === 0){
+            res.send("No user found");
+        }
+        else{
+            res.send(users);
+        }
+    }
+    catch(err){
+        res.send("Something went wrong");
+    }
+});
 
+app.get("/userId",async(req,res)=>{
+    const id = req.body._id;
+    try{
+        const users = await User.find({_id : id});
+        if(users.length === 0){
+            res.send("No user found");
+        }
+        else{
+            res.send(users);
+        }
+    }
+    catch(err){
+        res.send("Something went wrong");
+    }
+});
+
+
+app.get("/feed",async (res,req)=>{
+    try{
+        const users = await User.find({});
+        res.send(users);
+    }
+    catch(err){
+        res.send("Something went wrong");
+    }
+})
 
 connectDB()
     .then(()=>{
