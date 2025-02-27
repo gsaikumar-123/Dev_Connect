@@ -33,9 +33,9 @@ app.get("/user", async (res,req)=>{
 });
 
 app.get("/userId",async(req,res)=>{
-    const id = req.body._id;
+    const id = req.body.userId;
     try{
-        const users = await User.find({_id : id});
+        const users = await User.findById(id);
         if(users.length === 0){
             res.send("No user found");
         }
@@ -49,7 +49,7 @@ app.get("/userId",async(req,res)=>{
 });
 
 
-app.get("/feed",async (res,req)=>{
+app.get("/feed",async (req,res)=>{
     try{
         const users = await User.find({});
         res.send(users);
@@ -58,6 +58,20 @@ app.get("/feed",async (res,req)=>{
         res.send("Something went wrong");
     }
 })
+
+app.patch("/user",async (req,res)=>{
+    const userEmail = req.body.emailId;
+    const data = req.body;
+
+    try{
+        const user = await User.findOneAndUpdate({emailId : userEmail},data,{new : true});
+        res.send("User updated");
+    }
+    catch(err){
+        res.send("Something went wrong");
+    }
+});
+
 
 connectDB()
     .then(()=>{
