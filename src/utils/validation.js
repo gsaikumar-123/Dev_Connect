@@ -1,10 +1,10 @@
-const validator = require(validator);
+const validator = require("validator");
 
 const validateSignUpdata = (req)=>{
     const {firstName,lastName,emailId,password} = req.body;
 
-    if(!firstName || !lastNmae){
-        throw new Error("Nmae is not valid");
+    if(!firstName || !lastName){
+        throw new Error("Name is not valid");
     }
 
     if(!validator.isEmail(emailId)){
@@ -14,7 +14,15 @@ const validateSignUpdata = (req)=>{
     if(!validator.isStrongPassword(password)){
         throw new Error("Enter a strong password");
     }
-
 }
 
-model.exports = validateSignUpdata;
+const validateEditProfileData = (req) =>{
+    const allowed = ["firstName","lastName","emailId","photoUrl","age","gender","about","skills"];
+    const isAllowed = Object.keys(req.body).every((update)=>
+        allowed.includes(update)
+    );
+
+    return isAllowed;
+}
+
+module.exports = {validateSignUpdata,validateEditProfileData};
