@@ -59,16 +59,28 @@ app.get("/feed",async (req,res)=>{
     }
 })
 
-app.patch("/user",async (req,res)=>{
-    const userEmail = req.body.emailId;
+app.patch("/user/:userId",async (req,res)=>{
+    const userId = req.params?.userId;
     const data = req.body;
 
     try{
-        const user = await User.findOneAndUpdate({emailId : userEmail},data,{new : true});
+        const allowedUpdates = ["photoUrl","about","skills","gender","age"];
+        const isUpdateAllowed = Object.keys(data).every((update)=>
+            allowedUpdates.includes(update)
+        );
+        if(!isUpdateAllowed){
+            throw new Error("Invalid update");
+        }
+        if(data?.skills.length > 10){
+            throw new Error("Skills limit exceeded");
+        }
+        const user = await User.findOneAndUpdate({_id : userId},data,{
+            reunValidators : true,
+        });
         res.send("User updated");
     }
     catch(err){
-        res.send("Something went wrong");
+        res.send("Update failed" + err);
     }
 });
 
