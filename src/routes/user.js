@@ -77,8 +77,26 @@ userRouter.get("/user/connections",userAuth,async(req,res)=>{
     }
 });
 
+userRouter.get("/user/feed",userAuth,async(req,res)=>{
+    try{
+        const loggedInUser = req.user;
+        const users = await User.find({
+            _id : {
+                $ne : loggedInUser._id
+            }
+        }).select('firstName lastName');
 
-
+        if(!users){
+            return res.send("No users found");
+        }
+        res.json({
+            data : users,
+        });
+    }
+    catch(err){
+        res.send("Error : " + err);
+    }
+});
 
 
 module.exports = userRouter;
