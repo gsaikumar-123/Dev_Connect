@@ -20,7 +20,7 @@ userRouter.get("/user/requests", userAuth ,async(req,res)=>{
         const requests = await ConnectionRequest.find({
             toUserId: loggedInUser._id,
             status : "interested"
-        }).populate("fromUserId","firstName lastName");
+        }).populate('fromUserId','firstName lastName');
 
         if(!requests){
             return res.send("No requests found");
@@ -39,7 +39,7 @@ userRouter.get("/user/requests", userAuth ,async(req,res)=>{
 userRouter.get("/user/connections",userAuth,async(req,res)=>{
     try{
         const loggedInUser = req.user;
-        const connections = await ConnectionRequest.find({
+        const connectionRequests = await ConnectionRequest.find({
             $or:[
                 {
                     fromUserId:loggedInUser._id,
@@ -50,21 +50,35 @@ userRouter.get("/user/connections",userAuth,async(req,res)=>{
                     status : "accepted"
                 }
             ]
-        });
+        }).populate('fromUserId','firstName lastName')
+        .populate('toUserId','firstName lastName');
 
-        if(!connections){
+
+
+        if(!connectionRequests){
             return res.send("No connections found");
         }
 
+        const data = connectionRequests.map((row)=>{
+            if(row.fromUserId._id.toString()===loggedInUser._id.toString()){
+                return row.toUserId;
+            }
+            return row.fromUserId;
+        });
+            
+
         res.json({
-            connections : connections,
-            message : loggedInUser.firstName + " you have " + connections.length + " connections"
+            connections : data,
+            message : loggedInUser.firstName + " you have " + connectionRequests.length + " connections"
         })
     }
     catch(err){
         res.send("Error : " + err);
     }
 });
+
+
+
 
 
 module.exports = userRouter;
