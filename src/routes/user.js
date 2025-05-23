@@ -80,18 +80,39 @@ userRouter.get("/user/connections",userAuth,async(req,res)=>{
 userRouter.get("/user/feed",userAuth,async(req,res)=>{
     try{
         const loggedInUser = req.user;
+        const page = parseInt(req.query.page) || 1;
+        let limit = parseInt(req.query.limit) || 5;
+        limit = limit > 20 ? 5 : limit;
+        const skip = (page - 1) * limit;
+        const connectionRequests = await ConnectionRequest.find({
+            $or:[
+                {fromUserId:loggedInUser._id},
+                {toUserId:loggedInUser._id}
+            ]
+        }).select('fromUserId toUserId');
+
+        const hideUsersFromFeed = new Set();
+        connectionRequests.forEach((row)=>{
+            hideUsersFromFeed.add(row.fromUserId);
+            hideUsersFromFeed.add(row.toUserId);
+        });
+
         const users = await User.find({
             _id : {
-                $ne : loggedInUser._id
+                $nin : Array.from(hideUsersFromFeed)
             }
-        }).select('firstName lastName');
+        })
+        .select('firstName lastName photoUrl about')
+        .skip(skip)
+        .limit(limit);
 
         if(!users){
-            return res.send("No users found");
+            return res.send("No New users found");
         }
+
         res.json({
             data : users,
-        });
+        })
     }
     catch(err){
         res.send("Error : " + err);
