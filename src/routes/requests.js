@@ -10,7 +10,7 @@ requestRouter.post("/request/send/:status/:toUserId",userAuth,async(req,res)=>{
         const toUserId = req.params.toUserId;
         const status = req.params.status;
 
-        const isAllowed = ["ignored","intrested"].includes(status);
+        const isAllowed = ["ignored","interested"].includes(status);
 
         if(!isAllowed){
             throw new Error("Invalid status type");
@@ -65,7 +65,7 @@ requestRouter.post("/request/review/:status/:requestId",userAuth,async(req,res)=
         const connectionRequest = await ConnectionRequest.findOne({
             _id : requestId,
             toUserId : loggedInUser._id,
-            status : "intrested"
+            status : "interested"
         });
 
         if(!connectionRequest){
