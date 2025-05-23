@@ -29,7 +29,7 @@ profileRouter.patch("/profile/edit",userAuth,async(req,res)=>{
 
             await loggedInUser.save();
 
-            res.send("Profile updated");
+            res.send($loggedInUser.firstName + "Your Profile updated");
         }
     }
     catch(err){

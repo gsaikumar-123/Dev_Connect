@@ -25,7 +25,7 @@ authRouter.post("/signup",async (req,res)=>{
         res.send("User created");
     }
     catch(err){
-        res.send("Error : " + err);
+        res.send("Error creating account : " + err);
     }
 });
 
@@ -62,6 +62,7 @@ authRouter.post("/logout",async (req,res)=>{
     });
     res.send("Log Out Successfully");
 });
+
 
 
 
