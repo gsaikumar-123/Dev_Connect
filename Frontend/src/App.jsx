@@ -14,7 +14,7 @@ function App() {
       <BrowserRouter basename="/">
         <Routes>
           <Route path="/" element={<Body/>}> {/* This is Parent Route */}
-            <Route path="/feed" element = {<Feed/>}/>
+            <Route path="/user/feed" element = {<Feed/>}/>
             <Route path="/login" element = {<Login/>}/>
             <Route path="/profile" element = {<Profile/>}/> {/* These are Child Routes and should be rendered with help of <Outlet/> */}
           </Route>
