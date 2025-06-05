@@ -11,21 +11,24 @@ authRouter.get("/");
 authRouter.post("/signup",async (req,res)=>{
     try{
         validateSignUpdata(req);
-        const {firstName,lastName,emailId,password,skills,gender,about} = req.body;
+        const {firstName,lastName,emailId,password} = req.body;
         const passwordHash = await bcrypt.hash(password,10);
 
         const user = new User({
             firstName,
             lastName,
             emailId,
-            password : passwordHash,
-            skills,
-            gender,
-            about
+            password : passwordHash
         });
 
-        await user.save();
-        res.send("User created");
+        const newUser = await user.save();
+        const token = await newUser.getJWT();
+
+        res.cookie("token", token, {
+          expires: new Date(Date.now() + 3600000),
+        });
+        
+        res.json({message : "User created",data : newUser});
     }
     catch(err){
         res.send("Error creating account : " + err);
