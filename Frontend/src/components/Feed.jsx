@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { BASE_URL } from '../utils/constants'
 import { useDispatch, useSelector } from 'react-redux'
 import { addFeed } from '../utils/feedSlice'
+import UserCard from './UserCard'
 
 
 
@@ -15,7 +16,6 @@ const Feed = () => {
     try{
       const res = await axios.get(BASE_URL+"/user/feed",{withCredentials:true});
       dispatch(addFeed(res?.data?.data));
-      console.log(res);
     } 
     catch(err){
       console.log(err?.response?.data);
@@ -27,8 +27,8 @@ const Feed = () => {
   },[]);
 
   return (
-    <div>
-        This is Feed
+    <div className='flex justify-center my-10'>
+        {feed.length>0 && <UserCard user={feed[0]}/>}
     </div>
   )
 }
