@@ -43,6 +43,7 @@ const userSchema = mongoose.Schema({
     },
     photoUrl : {
         type : String,
+        default : "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
         validator : function(value){
             if(!validator.isURL(value)){
                 throw new Error("Invalid URL");
