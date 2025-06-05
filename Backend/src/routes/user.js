@@ -20,7 +20,7 @@ userRouter.get("/user/requests", userAuth ,async(req,res)=>{
         const requests = await ConnectionRequest.find({
             toUserId: loggedInUser._id,
             status : "interested"
-        }).populate('fromUserId','firstName lastName');
+        }).populate('fromUserId','firstName lastName age gender about photoUrl skills');
 
         if(!requests){
             return res.send("No requests found");
@@ -50,8 +50,8 @@ userRouter.get("/user/connections",userAuth,async(req,res)=>{
                     status : "accepted"
                 }
             ]
-        }).populate('fromUserId','firstName lastName')
-        .populate('toUserId','firstName lastName');
+        }).populate('fromUserId','firstName lastName gender photoUrl age about skills')
+        .populate('toUserId','firstName lastName gender photoUrl age about skills');
 
 
 
