@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/userSlice';
@@ -7,28 +7,29 @@ import { BASE_URL } from '../utils/constants';
 
 
 const Login = () => {
-    const [emailId, setEmailId] = React.useState("");
-    const [password, setPassword] = React.useState("");
+    const [emailId, setEmailId] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleLogin = async () => {
-        try {
-            const res = await axios.post(BASE_URL+"/login", {
-                emailId,
-                password
-            }, { withCredentials: true });
+    try {
+        const res = await axios.post(BASE_URL + "/login", {
+        emailId,
+        password
+        }, {
+        withCredentials: true
+        });
 
-            // console.log("Login success", res.data); // Actual data of user
-            dispatch(addUser(res.data));
-            return navigate("/");
-            
-        } catch (err) {
-            console.error("Login failed", err.response?.data || err.message);
-        }
+        dispatch(addUser(res.data));
+        navigate("/");
+
+    } catch (err) {
+        const msg = err.response?.data?.message || "Login failed. Please try again.";
+        setError(msg);
+    }
     };
-
-
 
   return (
     <div className='flex justify-center'>
@@ -86,7 +87,7 @@ const Login = () => {
                 />
 
             </label>
-
+            <p className='text-red-600'>{error}</p>
             <div className="card-actions justify-center my-4">
                 <button className="btn btn-primary justify-centre" onClick={handleLogin}>Sign in</button>
             </div>
@@ -97,4 +98,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Login;

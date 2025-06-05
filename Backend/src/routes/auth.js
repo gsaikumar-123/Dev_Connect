@@ -29,32 +29,33 @@ authRouter.post("/signup",async (req,res)=>{
     }
 });
 
-authRouter.post("/login",async (req,res)=>{    
-    try{
-        const {emailId,password} = req.body;
-        const user = await User.findOne({emailId : emailId});
-        if(!user){
-            throw new Error("Invalid Credentials");
-        }
+authRouter.post("/login", async (req, res) => {
+  try {
+    const { emailId, password } = req.body;
+    const user = await User.findOne({ emailId });
 
-        const isMatch = await user.validatePassword(password);
-
-        if(isMatch){
-            const token = await user.getJWT();
-
-            res.cookie("token",token,{
-                expires : new Date(Date.now() + 3600000),
-            });
-            res.send(user);
-        }
-        else{
-            throw new Error("Invalid Credentials");
-        }
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
     }
-    catch(err){
-        res.send("Error : " + err);
+
+    const isMatch = await user.validatePassword(password);
+
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid email or password" });
     }
+
+    const token = await user.getJWT();
+
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 3600000),
+    });
+
+    res.status(200).json(user);
+  } catch (err) {
+    console.error("Login error:", err);
+  }
 });
+
 
 authRouter.post("/logout",async (req,res)=>{
     res.cookie("token",null,{
