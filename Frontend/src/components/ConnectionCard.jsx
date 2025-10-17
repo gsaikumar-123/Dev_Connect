@@ -22,21 +22,50 @@ const ConnectionCard = ({user,sign}) => {
         }
     }
   return (
-    <div className='flex items-center w-1/4 bg-base-300 m-2 p-4 gap-4 rounded-lg'>
-      <div>
-        <img className="w-16 h-16 rounded-full"src={photoUrl} alt="User Photo" />
-      </div>
-      <div className='text-left w-1/3'>
-        <p className='font-bold'>{firstName+" "+lastName}</p>
-        {age && gender && <p>{age + "," + gender}</p>}
-        <p>{about}</p>
-      </div>
-      {sign && 
-        <div className=''>
-            <button className="btn btn-primary p-2 m-2" onClick={()=>handleRequest("rejected",user._id)}>Reject</button>
-            <button className="btn btn-secondary p-2" onClick={()=>handleRequest("accepted",user._id)}>Accept</button>
+    <div className='card-modern flex flex-col sm:flex-row items-center gap-4 p-5 mx-auto max-w-2xl mb-4 hover:shadow-soft transition-shadow duration-200'>
+      <div className="flex-shrink-0">
+        <div className="relative">
+          <img 
+            className="w-20 h-20 rounded-full object-cover ring-2 ring-primary/20" 
+            src={photoUrl} 
+            alt={`${firstName} ${lastName}`}
+          />
+          <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-primary rounded-full border-2 border-white"></div>
         </div>
-      }
+      </div>
+      
+      <div className='flex-1 text-center sm:text-left min-w-0'>
+        <h3 className='text-lg font-bold text-secondary truncate'>
+          {firstName} {lastName}
+        </h3>
+        {age && gender && (
+          <p className="text-secondary-lighter text-sm font-medium mt-0.5">
+            {age} years • {gender}
+          </p>
+        )}
+        {about && (
+          <p className="text-secondary-lighter text-sm mt-2 line-clamp-2">
+            {about}
+          </p>
+        )}
+      </div>
+      
+      {sign && (
+        <div className='flex gap-2 flex-shrink-0'>
+          <button 
+            className="btn-secondary px-5 py-2"
+            onClick={() => handleRequest("rejected", user._id)}
+          >
+            Decline
+          </button>
+          <button 
+            className="btn-primary px-5 py-2"
+            onClick={() => handleRequest("accepted", user._id)}
+          >
+            Accept
+          </button>
+        </div>
+      )}
     </div>
   )
 }

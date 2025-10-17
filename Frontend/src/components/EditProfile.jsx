@@ -35,111 +35,144 @@ const EditProfile = ({ user }) => {
   };
 
   return (
-    <div className="flex justify-center gap-10">
-      <div className="card card-border bg-base-300 w-96">
-        <div className="card-body">
-          <h2 className="card-title font-bold">Edit Profile</h2>
+    <div className="max-w-7xl mx-auto px-4 py-12">
+      <div className="flex flex-col lg:flex-row gap-8 justify-center">
+        {/* Edit Form */}
+        <div className="card-modern p-8 flex-1 max-w-xl">
+          <h2 className="text-3xl font-bold text-secondary mb-2">Edit Profile</h2>
+          <p className="text-secondary-lighter mb-8">Update your personal information</p>
 
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">First Name:</legend>
-            <input
-              type="text"
-              className="input"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              placeholder="First Name"
-            />
-          </fieldset>
+          <div className="space-y-5">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-secondary font-semibold mb-2 text-sm">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  className="input-field"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="First Name"
+                />
+              </div>
 
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Last Name:</legend>
-            <input
-              type="text"
-              className="input"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              placeholder="Last Name"
-            />
-          </fieldset>
+              <div>
+                <label className="block text-secondary font-semibold mb-2 text-sm">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  className="input-field"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Last Name"
+                />
+              </div>
+            </div>
 
-          <div className="flex gap-4">
-            <fieldset className="fieldset w-1/2">
-              <legend className="fieldset-legend">Age:</legend>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-secondary font-semibold mb-2 text-sm">
+                  Age
+                </label>
+                <input
+                  type="text"
+                  className="input-field"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  placeholder="25"
+                />
+              </div>
+
+              <div>
+                <label className="block text-secondary font-semibold mb-2 text-sm">
+                  Gender
+                </label>
+                <select
+                  className="input-field"
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                >
+                  <option value="">Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-secondary font-semibold mb-2 text-sm">
+                Photo URL
+              </label>
               <input
                 type="text"
-                className="input w-full"
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-                placeholder="Age"
+                className="input-field"
+                value={photoUrl}
+                onChange={(e) => setPhotoUrl(e.target.value)}
+                placeholder="https://example.com/photo.jpg"
               />
-            </fieldset>
+            </div>
 
-            <fieldset className="fieldset w-1/2">
-              <legend className="fieldset-legend">Gender:</legend>
-              <select
-                className="select select-bordered w-full"
-                value={gender}
-                onChange={(e) => setGender(e.target.value)}
-              >
-                <option value="">Choose One</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            </fieldset>
-          </div>
+            <div>
+              <label className="block text-secondary font-semibold mb-2 text-sm">
+                About
+              </label>
+              <textarea
+                className="input-field resize-none"
+                rows="3"
+                value={about}
+                onChange={(e) => setAbout(e.target.value)}
+                placeholder="Tell us about yourself..."
+              />
+            </div>
 
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Photo URL:</legend>
-            <input
-              type="text"
-              className="input"
-              value={photoUrl}
-              onChange={(e) => setPhotoUrl(e.target.value)}
-              placeholder="Photo URL"
-            />
-          </fieldset>
+            <div>
+              <label className="block text-secondary font-semibold mb-2 text-sm">
+                Skills
+              </label>
+              <input
+                type="text"
+                className="input-field"
+                value={skills}
+                onChange={(e) => setSkills(e.target.value)}
+                placeholder="React, Node.js, Python"
+              />
+              <p className="text-secondary-lighter text-xs mt-1">Separate skills with commas</p>
+            </div>
 
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">About:</legend>
-            <input
-              type="text"
-              className="input"
-              value={about}
-              onChange={(e) => setAbout(e.target.value)}
-              placeholder="About"
-            />
-          </fieldset>
+            {error && (
+              <div className="p-4 bg-red-50 border border-red-100 rounded-lg">
+                <p className="text-red-600 text-sm font-medium text-center">{error}</p>
+              </div>
+            )}
 
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Skills:</legend>
-            <input
-              type="text"
-              className="input"
-              value={skills}
-              onChange={(e) => setSkills(e.target.value)}
-              placeholder="Skills"
-            />
-          </fieldset>
-
-          <p className="text-red-500 text-sm text-center">{error}</p>
-
-          <div className="card-actions justify-center">
-            <button className="btn btn-primary" onClick={saveProfile}>
-              Save Profile
+            <button className="btn-primary w-full" onClick={saveProfile}>
+              Save Changes
             </button>
+          </div>
+        </div>
+
+        {/* Preview Card */}
+        <div className="flex-shrink-0">
+          <div className="sticky top-24">
+            <p className="text-secondary-lighter text-sm font-semibold mb-4 text-center">Preview</p>
+            <UserCard
+              user={{ firstName, lastName, about, photoUrl, skills, gender, age }}
+            />
           </div>
         </div>
       </div>
 
-      <UserCard
-        user={{ firstName, lastName, about, photoUrl,skills,gender,age }}
-      />
-
       {/* Toast Message */}
       {showToast && (
         <div className="toast toast-top toast-center">
-          <div className="alert alert-success">
-            <span>Profile saved successfully.</span>
+          <div className="alert bg-primary text-white border-none shadow-soft px-6 py-4 rounded-xl">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span className="font-semibold">Profile saved successfully!</span>
           </div>
         </div>
       )}
