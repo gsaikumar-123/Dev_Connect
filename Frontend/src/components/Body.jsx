@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import NavBar from './NavBar'
-import Footer from './Footer'
 import { Outlet, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { BASE_URL } from '../utils/constants'
@@ -36,7 +35,6 @@ const Body = () => {
       <main className="flex-grow">
         <Outlet />
       </main>
-      {user && <Footer />}
     </div>
   )
 }
