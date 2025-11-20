@@ -65,6 +65,12 @@ const NavBar = () => {
                 >
                   Requests
                 </Link>
+                <Link 
+                  to="/chat" 
+                  className="text-secondary-lighter hover:text-primary font-medium transition-colors px-3 py-2 rounded-lg hover:bg-accent"
+                >
+                  Chat
+                </Link>
                 
                 <div className="h-6 w-px bg-gray-200"></div>
                 

@@ -4,11 +4,12 @@ import Body from "./components/Body";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import Feed from "./components/Feed";
-import {Provider} from "react-redux"
+import {Provider} from "react-redux";
 import appStore from "./utils/appStore";
 import Connections from "./components/Connections";
 import Requests from "./components/Requests";
 import SearchResults from "./components/SearchResults";
+import ChatPage from "./components/ChatPage";
 
 function App() {
   return (
@@ -22,7 +23,8 @@ function App() {
             <Route path="/profile" element = {<Profile/>}/>
             <Route path="/connections" element = {<Connections/>}/>
             <Route path="/requests" element = {<Requests/>}/>
-              <Route path="/search/:query" element = {<SearchResults/>}/>
+            <Route path="/search/:query" element = {<SearchResults/>}/>
+            <Route path="/chat" element={<ChatPage/>}/>
           </Route>
 
         </Routes>
