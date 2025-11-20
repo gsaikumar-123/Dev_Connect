@@ -8,6 +8,7 @@ import {Provider} from "react-redux"
 import appStore from "./utils/appStore";
 import Connections from "./components/Connections";
 import Requests from "./components/Requests";
+import SearchResults from "./components/SearchResults";
 
 function App() {
   return (
@@ -15,12 +16,13 @@ function App() {
     <Provider store={appStore}>
       <BrowserRouter basename="/">
         <Routes>
-          <Route path="/" element={<Body/>}> {/* This is Parent Route */}
+          <Route path="/" element={<Body/>}> 
             <Route path="/user/feed" element = {<Feed/>}/>
             <Route path="/login" element = {<Login/>}/>
-            <Route path="/profile" element = {<Profile/>}/> {/* These are Child Routes and should be rendered with help of <Outlet/> */}
+            <Route path="/profile" element = {<Profile/>}/>
             <Route path="/connections" element = {<Connections/>}/>
             <Route path="/requests" element = {<Requests/>}/>
+              <Route path="/search/:query" element = {<SearchResults/>}/>
           </Route>
 
         </Routes>

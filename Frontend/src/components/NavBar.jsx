@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../utils/constants';
 import axios from 'axios';
 import { removeUser } from '../utils/userSlice';
+import SearchBar from './SearchBar';
 
 const NavBar = () => {
   const user = useSelector((store)=>store.user);
@@ -23,13 +24,22 @@ const NavBar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex-shrink-0">
+          <div className="flex items-center gap-2">
             <Link 
               to={user ? "/user/feed": "/login"} 
-              className="text-2xl font-bold text-secondary hover:text-primary transition-colors duration-200 flex items-center gap-2"
+              className="text-2xl font-bold text-secondary hover:text-primary transition-colors duration-200 flex items-center gap-2 flex-shrink-0"
             >
               <span className="text-primary">Dev</span>Connect
             </Link>
+
+            {/* Search Bar - Desktop */}
+            {user && (
+              <div className="hidden md:flex flex-1 max-w-xl mx-8 min-w-0">
+                <div className="w-full">
+                  <SearchBar />
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Desktop Navigation */}
@@ -128,9 +138,21 @@ const NavBar = () => {
           )}
         </div>
 
+          {/* Search Bar - Mobile (when menu closed) */}
+          {user && !mobileMenuOpen && (
+            <div className="md:hidden py-3 border-t border-gray-100">
+              <SearchBar />
+            </div>
+          )}
+
         {/* Mobile Menu */}
         {user && mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-100 animate-fade-in">
+              {/* Search in mobile menu */}
+              <div className="mb-4">
+                <SearchBar />
+              </div>
+            
             <div className="flex items-center gap-3 px-4 py-3 mb-4 bg-accent rounded-lg">
               <img
                 src={user.photoUrl}

@@ -3,6 +3,7 @@ const connectDB = require('./config/database');
 const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const searchCache = require('./utils/searchCache');
 
 
 const authRouter = require("./routes/auth");
@@ -27,6 +28,11 @@ app.use("/" , userRouter);
 connectDB()
     .then(()=>{
         console.log("Database connected");
+        
+        searchCache.buildTrie().catch(err => {
+            console.error("Failed to build search index:", err);
+        });
+        
         app.listen(1234,()=>{
             console.log("Server started at port 1234");
         });

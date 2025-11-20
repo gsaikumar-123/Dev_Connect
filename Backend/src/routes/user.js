@@ -3,6 +3,7 @@ const userRouter = express.Router();
 const { userAuth } = require('../middlewares/auth');
 const User = require('../models/user');
 const ConnectionRequest = require('../models/connectionRequest');
+const searchCache = require('../utils/searchCache');
 
 userRouter.get('/user/view', userAuth, async (req, res) => {
     try {
@@ -33,6 +34,56 @@ userRouter.get("/user/requests", userAuth ,async(req,res)=>{
     }
     catch(err){
         res.send("Error : " + err);
+    }
+});
+
+userRouter.get('/user/search', userAuth, async (req, res) => {
+    try {
+        const { q } = req.query;
+        
+        if (!q || q.trim().length === 0) {
+            return res.status(400).json({ 
+                success: false,
+                message: 'Search query is required' 
+            });
+        }
+
+        if (searchCache.needsRebuild()) {
+            await searchCache.buildTrie();
+        }
+
+        const matchingUserIds = searchCache.search(q);
+
+        if (matchingUserIds.length === 0) {
+            return res.json({
+                success: true,
+                data: [],
+                message: 'No users found'
+            });
+        }
+
+       
+        const loggedInUser = req.user;
+        const users = await User.find({
+            _id: { 
+                $in: matchingUserIds,
+                $ne: loggedInUser._id
+            }
+        })
+        .select('firstName lastName photoUrl about skills gender age')
+        .limit(20);
+
+        res.json({
+            success: true,
+            data: users,
+            count: users.length
+        });
+    } catch (err) {
+        console.error('Search error:', err);
+        res.status(500).json({ 
+            success: false,
+            message: 'Error searching users: ' + err.message 
+        });
     }
 });
 

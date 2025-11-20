@@ -4,6 +4,7 @@ const User = require('../models/user');
 const {validateSignUpdata} = require("../utils/validation");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const searchCache = require('../utils/searchCache');
 
 
 authRouter.get("/");
@@ -23,6 +24,11 @@ authRouter.post("/signup",async (req,res)=>{
 
         const newUser = await user.save();
         const token = await newUser.getJWT();
+
+          // Add new user to search cache
+          if (searchCache.isInitialized) {
+              searchCache.addUser(newUser);
+          }
 
         res.cookie("token", token, {
           expires: new Date(Date.now() + 3600000),
