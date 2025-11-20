@@ -4,18 +4,18 @@ import { Link } from 'react-router-dom'
 const Footer = () => {
   return (
     <footer className="bg-white border-t border-gray-100 mt-auto">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
-          <div className="col-span-1 md:col-span-2">
+          <div className="col-span-1 sm:col-span-2">
             <h3 className="text-2xl font-bold text-secondary mb-3">
               <span className="text-primary">Dev</span>Connect
             </h3>
-            <p className="text-secondary-lighter text-sm leading-relaxed max-w-md">
+            <p className="text-secondary-lighter text-sm leading-relaxed max-w-md mb-5">
               Connect with developers worldwide. Build your network, share knowledge, 
               and grow together in the developer community.
             </p>
-            <div className="flex gap-4 mt-4">
+            <div className="flex gap-3 mt-4">
               <a 
                 href="https://github.com" 
                 target="_blank" 
@@ -109,12 +109,12 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-gray-100">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-secondary-lighter text-sm">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p className="text-secondary-lighter text-sm text-center sm:text-left">
               © {new Date().getFullYear()} DevConnect. All rights reserved.
             </p>
-            <p className="text-secondary-lighter text-sm">
-              Made with <span className="text-primary">❤</span> for developers
+            <p className="text-secondary-lighter text-sm flex items-center gap-1">
+              Made with <span className="text-primary text-base">♥</span> for developers
             </p>
           </div>
         </div>
