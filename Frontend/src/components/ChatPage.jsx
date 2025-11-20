@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { BASE_URL } from '../utils/constants';
@@ -10,6 +10,13 @@ import ChatWindow from './ChatWindow';
 const ChatPage = () => {
   const dispatch = useDispatch();
   const { conversations, activeConversationId, messages, typing } = useSelector(s => s.chat);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     fetchConversations();
@@ -67,21 +74,61 @@ const ChatPage = () => {
     fetchMessages(conversationId);
   };
 
+  const handleBackToList = () => {
+    dispatch(setActiveConversation(null));
+  };
+
+  // Mobile: show either list or chat window
+  if (isMobile) {
+    return (
+      <div className="h-[calc(100vh-4rem)] bg-white">
+        {!activeConversationId ? (
+          <div className="h-full flex flex-col">
+            <div className="px-4 py-4 border-b bg-white sticky top-0 z-10">
+              <h1 className="text-2xl font-bold text-secondary">Messages</h1>
+            </div>
+            <ConversationList 
+              conversations={conversations} 
+              activeConversationId={activeConversationId}
+              onSelect={handleSelectConversation}
+            />
+          </div>
+        ) : (
+          <ChatWindow 
+            conversationId={activeConversationId} 
+            messages={activeConversationId ? messages[activeConversationId] || [] : []}
+            typing={typing[activeConversationId]}
+            onBack={handleBackToList}
+            isMobile={true}
+          />
+        )}
+      </div>
+    );
+  }
+
+  // Desktop: show both side by side
   return (
-    <div className="max-w-6xl mx-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-4 h-[calc(100vh-4rem)]">
-      <div className="md:col-span-1 border rounded-lg bg-white flex flex-col">
-        <div className="p-3 border-b font-semibold">Chats</div>
+    <div className="h-[calc(100vh-4rem)] flex bg-white max-w-7xl mx-auto">
+      {/* Conversations sidebar */}
+      <div className="w-full md:w-96 lg:w-[420px] border-r flex flex-col bg-white">
+        <div className="px-6 py-5 border-b">
+          <h1 className="text-2xl font-bold text-secondary">Messages</h1>
+        </div>
         <ConversationList 
           conversations={conversations} 
           activeConversationId={activeConversationId}
           onSelect={handleSelectConversation}
         />
       </div>
-      <div className="md:col-span-2 border rounded-lg bg-white flex flex-col">
+      
+      {/* Chat window */}
+      <div className="flex-1 flex flex-col bg-gray-50">
         <ChatWindow 
           conversationId={activeConversationId} 
           messages={activeConversationId ? messages[activeConversationId] || [] : []}
           typing={typing[activeConversationId]}
+          onBack={null}
+          isMobile={false}
         />
       </div>
     </div>
