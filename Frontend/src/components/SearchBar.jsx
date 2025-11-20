@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
 import { BASE_URL } from '../utils/constants';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const SearchBar = () => {
   const [query, setQuery] = useState('');
@@ -12,6 +13,7 @@ const SearchBar = () => {
   const searchRef = useRef(null);
   const debounceTimer = useRef(null);
   const navigate = useNavigate();
+  const currentUser = useSelector(store => store.user);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -41,7 +43,8 @@ const SearchBar = () => {
       });
 
       if (res.data.success) {
-        setResults(res.data.data || []);
+        const list = (res.data.data || []).filter(u => !currentUser || u._id !== currentUser._id);
+        setResults(list);
         setShowResults(true);
       }
     } catch (err) {
@@ -67,6 +70,7 @@ const SearchBar = () => {
   };
 
   const handleResultClick = (user) => {
+    navigate('/user/' + user._id);
     setQuery('');
     setShowResults(false);
     setResults([]);

@@ -3,6 +3,7 @@ const {userAuth} = require("../middlewares/auth");
 const requestRouter = express.Router();
 const ConnectionRequest = require("../models/connectionRequest");
 const User = require("../models/user");
+const mongoose = require("mongoose");
 
 requestRouter.post("/request/send/:status/:toUserId",userAuth,async(req,res)=>{
     try{
@@ -86,3 +87,31 @@ requestRouter.post("/request/review/:status/:requestId",userAuth,async(req,res)=
 });
 
 module.exports = requestRouter;
+
+requestRouter.delete('/connection/remove/:userId', userAuth, async (req, res) => {
+    try {
+        const loggedInUserId = req.user._id.toString();
+        const targetUserId = req.params.userId;
+
+        if (!mongoose.Types.ObjectId.isValid(targetUserId)) {
+            return res.status(400).json({ success: false, message: 'Invalid user id' });
+        }
+
+        const connection = await ConnectionRequest.findOne({
+            $or: [
+                { fromUserId: loggedInUserId, toUserId: targetUserId, status: 'accepted' },
+                { fromUserId: targetUserId, toUserId: loggedInUserId, status: 'accepted' }
+            ]
+        });
+
+        if (!connection) {
+            return res.status(404).json({ success: false, message: 'Connection not found' });
+        }
+
+        await ConnectionRequest.deleteOne({ _id: connection._id });
+
+        res.json({ success: true, message: 'Connection removed' });
+    } catch (err) {
+        res.status(500).json({ success: false, message: 'Error removing connection: ' + err.message });
+    }
+});

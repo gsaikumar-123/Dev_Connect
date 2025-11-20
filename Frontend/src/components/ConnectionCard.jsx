@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { removeRequest } from '../utils/requestsSlice';
 import { useNavigate } from 'react-router-dom';
 import { setActiveConversation } from '../utils/chatSlice';
+import { removeConnectionById } from '../utils/connectionsSlice';
 import UserProfileModal from './UserProfileModal';
 
 const ConnectionCard = ({user,sign}) => {
@@ -134,27 +135,50 @@ const ConnectionCard = ({user,sign}) => {
           </button>
         </div>
       )}
+      {/* Show chat + unfriend only for established connections (sign false) */}
       {!sign && (
-        <button
-          onClick={handleStartChat}
-          disabled={isCreatingChat}
-          className="btn-primary px-5 py-2.5 flex items-center justify-center gap-2 flex-shrink-0"
-          aria-label="Start chat"
-        >
-          {isCreatingChat ? (
-            <svg className="animate-spin-slow h-4 w-4" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-          ) : (
-            <>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        <div className="flex gap-2 w-full sm:w-auto">
+          <button
+            onClick={handleStartChat}
+            disabled={isCreatingChat}
+            className="btn-primary px-5 py-2.5 flex items-center justify-center gap-2 flex-1 sm:flex-initial"
+            aria-label="Start chat"
+          >
+            {isCreatingChat ? (
+              <svg className="animate-spin-slow h-4 w-4" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              Chat
-            </>
-          )}
-        </button>
+            ) : (
+              <>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+                Chat
+              </>
+            )}
+          </button>
+          <button
+            onClick={async () => {
+              if (!window.confirm('Remove this connection?')) return;
+              try {
+                const res = await axios.delete(BASE_URL + '/request/connection/remove/' + user._id, { withCredentials: true });
+                if(res.data?.success){
+                  dispatch(removeConnectionById(user._id));
+                }
+              } catch (err) {
+                console.error('Error removing connection', err);
+              }
+            }}
+            className="btn-secondary px-5 py-2.5 flex items-center justify-center gap-2 flex-1 sm:flex-initial"
+            aria-label="Unfriend user"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            Unfriend
+          </button>
+        </div>
       )}
     </div>
     <UserProfileModal user={user} isOpen={showModal} onClose={() => setShowModal(false)} />

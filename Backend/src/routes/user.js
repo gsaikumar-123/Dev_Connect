@@ -52,7 +52,11 @@ userRouter.get('/user/search', userAuth, async (req, res) => {
             await searchCache.buildTrie();
         }
 
-        const matchingUserIds = searchCache.search(q);
+        let matchingUserIds = searchCache.search(q);
+
+        // Remove self id client-side to guarantee exclusion regardless of query logic
+        const selfId = req.user._id.toString();
+        matchingUserIds = matchingUserIds.filter(id => id.toString() !== selfId);
 
         if (matchingUserIds.length === 0) {
             return res.json({
@@ -64,14 +68,25 @@ userRouter.get('/user/search', userAuth, async (req, res) => {
 
        
         const loggedInUser = req.user;
-        const users = await User.find({
-            _id: { 
-                $in: matchingUserIds,
-                $ne: loggedInUser._id
-            }
-        })
+        const users = await User.find({ _id: { $in: matchingUserIds } })
         .select('firstName lastName photoUrl about skills gender age')
         .limit(20);
+userRouter.get('/user/:id', userAuth, async (req, res) => {
+    try {
+        const { id } = req.params;
+        if (!id) return res.status(400).json({ success: false, message: 'User id required' });
+        if (id === req.user._id.toString()) {
+            // return current user sanitized
+            const { firstName, lastName, photoUrl, about, skills, gender, age } = req.user;
+            return res.json({ success: true, data: { _id: req.user._id, firstName, lastName, photoUrl, about, skills, gender, age, isSelf: true } });
+        }
+        const other = await User.findById(id).select('firstName lastName photoUrl about skills gender age');
+        if (!other) return res.status(404).json({ success: false, message: 'User not found' });
+        res.json({ success: true, data: other });
+    } catch (err) {
+        res.status(500).json({ success: false, message: 'Error fetching user: ' + err.message });
+    }
+});
 
         res.json({
             success: true,

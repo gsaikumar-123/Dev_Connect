@@ -111,7 +111,7 @@ const ChatPage = () => {
     <div className="h-[calc(100vh-4rem)] flex bg-white max-w-7xl mx-auto">
       {/* Conversations sidebar */}
       <div className="w-full md:w-96 lg:w-[420px] border-r flex flex-col bg-white">
-        <div className="px-6 py-5 border-b">
+        <div className="px-6 py-4 border-b">
           <h1 className="text-2xl font-bold text-secondary">Messages</h1>
         </div>
         <ConversationList 

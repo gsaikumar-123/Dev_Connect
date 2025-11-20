@@ -3,6 +3,7 @@ import { BrowserRouter,Routes,Route } from "react-router-dom";
 import Body from "./components/Body";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
+import UserProfilePage from "./components/UserProfilePage";
 import Feed from "./components/Feed";
 import {Provider} from "react-redux";
 import appStore from "./utils/appStore";
@@ -21,6 +22,7 @@ function App() {
             <Route path="/user/feed" element = {<Feed/>}/>
             <Route path="/login" element = {<Login/>}/>
             <Route path="/profile" element = {<Profile/>}/>
+            <Route path="/user/:id" element={<UserProfilePage/>}/>
             <Route path="/connections" element = {<Connections/>}/>
             <Route path="/requests" element = {<Requests/>}/>
             <Route path="/search/:query" element = {<SearchResults/>}/>

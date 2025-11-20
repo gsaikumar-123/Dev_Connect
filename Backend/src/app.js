@@ -31,7 +31,6 @@ app.use("/" , requestRouter);
 app.use("/" , userRouter);
 app.use("/" , chatRouter);
 
-// Helper to parse cookie header into object
 function parseCookies(cookieHeader) {
     const list = {};
     if (!cookieHeader) return list;
