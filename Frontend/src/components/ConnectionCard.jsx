@@ -1,14 +1,20 @@
 import axios from 'axios';
-import React from 'react'
+import React from 'react';
 import { BASE_URL } from '../utils/constants';
 import { useDispatch } from 'react-redux';
 import { removeRequest } from '../utils/requestsSlice';
+import { useNavigate } from 'react-router-dom';
+import { setActiveConversation } from '../utils/chatSlice';
+import UserProfileModal from './UserProfileModal';
 
 const ConnectionCard = ({user,sign}) => {
     const {firstName, lastName, gender, photoUrl, age, about} = user || user.fromUserId;
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [isLoading, setIsLoading] = React.useState(false);
     const [actionType, setActionType] = React.useState(null);
+    const [showModal, setShowModal] = React.useState(false);
+    const [isCreatingChat, setIsCreatingChat] = React.useState(false);
     
     const handleRequest = async (status,_id)=>{
         setIsLoading(true);
@@ -29,9 +35,29 @@ const ConnectionCard = ({user,sign}) => {
             setActionType(null);
         }
     }
+
+    const handleStartChat = async () => {
+      setIsCreatingChat(true);
+      try {
+        const res = await axios.post(
+          BASE_URL + '/chat/send',
+          { toUserId: user._id, text: '👋' },
+          { withCredentials: true }
+        );
+        dispatch(setActiveConversation(res.data.conversationId));
+        navigate('/chat');
+      } catch (err) {
+        console.error('Error starting chat:', err);
+        navigate('/chat');
+      } finally {
+        setIsCreatingChat(false);
+      }
+    }
+
   return (
+    <>
     <div className='card-modern flex flex-col sm:flex-row items-center gap-5 p-6 mx-auto max-w-2xl hover:shadow-soft transition-all duration-300 animate-fade-in'>
-      <div className="flex-shrink-0">
+      <div className="flex-shrink-0 cursor-pointer" onClick={() => setShowModal(true)}>
         <div className="relative group">
           <img 
             className="w-20 h-20 rounded-full object-cover ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all duration-300" 
@@ -46,7 +72,7 @@ const ConnectionCard = ({user,sign}) => {
         </div>
       </div>
       
-      <div className='flex-1 text-center sm:text-left min-w-0'>
+      <div className='flex-1 text-center sm:text-left min-w-0 cursor-pointer' onClick={() => setShowModal(true)}>
         <h3 className='text-xl font-bold text-secondary truncate mb-1'>
           {firstName} {lastName}
         </h3>
@@ -108,7 +134,31 @@ const ConnectionCard = ({user,sign}) => {
           </button>
         </div>
       )}
+      {!sign && (
+        <button
+          onClick={handleStartChat}
+          disabled={isCreatingChat}
+          className="btn-primary px-5 py-2.5 flex items-center justify-center gap-2 flex-shrink-0"
+          aria-label="Start chat"
+        >
+          {isCreatingChat ? (
+            <svg className="animate-spin-slow h-4 w-4" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          ) : (
+            <>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+              Chat
+            </>
+          )}
+        </button>
+      )}
     </div>
+    <UserProfileModal user={user} isOpen={showModal} onClose={() => setShowModal(false)} />
+    </>
   )
 }
 

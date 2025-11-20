@@ -2,6 +2,7 @@ const express = require('express');
 const { userAuth } = require('../middlewares/auth');
 const Conversation = require('../models/conversation');
 const Message = require('../models/message');
+const User = require('../models/user');
 const chatRouter = express.Router();
 
 function getPairKey(a, b) {
@@ -16,14 +17,18 @@ chatRouter.get('/chat/conversations', userAuth, async (req, res) => {
         path: 'lastMessage',
         select: 'text attachments messageType fromUserId toUserId sentAt isDeleted'
       })
+      .populate({
+        path: 'participants',
+        select: 'firstName lastName photoUrl about skills'
+      })
       .sort({ lastMessageAt: -1 })
       .limit(50);
 
     const formatted = conversations.map(c => {
-      const otherUserId = c.participants.find(p => p.toString() !== userId.toString());
+      const otherUser = c.participants.find(p => p._id.toString() !== userId.toString());
       return {
         _id: c._id,
-        otherUserId,
+        otherUser,
         lastMessage: c.lastMessage,
         unreadCount: c.unreadCounts.get(userId.toString()) || 0,
         lastMessageAt: c.lastMessageAt,
