@@ -23,7 +23,7 @@ const ChatWindow = ({ conversationId, messages, typing }) => {
       const state = window.__APP_STORE__?.getState();
       const conversation = state?.chat.conversations.find(c => c._id === conversationId);
       if (!conversation) return;
-      const toUserId = conversation.otherUserId;
+      const toUserId = conversation.otherUser?._id || conversation.otherUserId;
       const payload = { toUserId, text };
       const res = await axios.post(BASE_URL + '/chat/send', payload, { withCredentials: true });
       dispatch(addMessage({ conversationId, message: res.data.data }));
@@ -46,7 +46,8 @@ const ChatWindow = ({ conversationId, messages, typing }) => {
       const conversation = state?.chat.conversations.find(c => c._id === conversationId);
       if (conversation) {
         const socket = getSocket();
-        socket.emit('chat:typing', { toUserId: conversation.otherUserId, conversationId });
+        const toUserId = conversation.otherUser?._id || conversation.otherUserId;
+        socket.emit('chat:typing', { toUserId, conversationId });
       }
     }
   };
