@@ -9,7 +9,6 @@ const conversationSchema = new mongoose.Schema({
   participantLastSeen: { type: Map, of: Date, default: {} } // key: userId, value: last read timestamp
 }, { timestamps: true });
 
-conversationSchema.index({ pairKey: 1 }, { unique: true });
 conversationSchema.index({ lastMessageAt: -1 });
 conversationSchema.index({ 'participants': 1 });
 
