@@ -5,7 +5,6 @@ import axios from 'axios'
 import { BASE_URL } from '../utils/constants'
 import { useDispatch, useSelector } from 'react-redux'
 import { addUser } from '../utils/userSlice'
-import { setTheme } from '../utils/themeSlice'
 
 const Body = () => {
   const dispatch = useDispatch();
@@ -24,27 +23,12 @@ const Body = () => {
     }
   }
 
-  const themeMode = useSelector(store => store.theme.mode);
-
   useEffect(()=>{
     if(!user){
       fetchUser();
     }
-    // apply theme on mount and whenever it changes
   },[])
 
-  useEffect(() => {
-    // Ensure theme class & persistence
-    if (typeof document !== 'undefined') {
-      const root = document.documentElement;
-      if (themeMode === 'dark') {
-        root.classList.add('dark');
-      } else {
-        root.classList.remove('dark');
-      }
-      localStorage.setItem('theme', themeMode);
-    }
-  }, [themeMode]);
   return (
     <div className="flex flex-col min-h-screen">
       <NavBar />
