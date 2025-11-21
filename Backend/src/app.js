@@ -102,8 +102,8 @@ connectDB()
             });
         });
 
-        server.listen(1234, () => {
-            console.log("Server & Socket.IO running on port 1234");
+        server.listen(process.env.PORT || 1234, () => {
+            console.log(`Server & Socket.IO running on port ${process.env.PORT || 1234}`);
         });
     })
     .catch((err)=>{

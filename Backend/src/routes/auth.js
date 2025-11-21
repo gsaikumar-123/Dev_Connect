@@ -7,7 +7,9 @@ const bcrypt = require("bcrypt");
 const searchCache = require('../utils/searchCache');
 
 
-authRouter.get("/");
+authRouter.get("/", (req, res) => {
+    res.json({ message: "Dev_Connect API is running"});
+});
 
 authRouter.post("/signup",async (req,res)=>{
     try{
