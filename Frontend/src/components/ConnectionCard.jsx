@@ -10,7 +10,8 @@ import UserProfileModal from './UserProfileModal';
 import ConfirmDialog from './ConfirmDialog';
 
 const ConnectionCard = ({user,sign}) => {
-    const {firstName, lastName, gender, photoUrl, age, about} = user || user.fromUserId;
+    const userData = user.fromUserId || user;
+    const {firstName, lastName, gender, photoUrl, age} = userData;
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = React.useState(false);
@@ -43,8 +44,8 @@ const ConnectionCard = ({user,sign}) => {
       setIsCreatingChat(true);
       try {
         const res = await axios.post(
-          BASE_URL + '/chat/send',
-          { toUserId: user._id, text: '👋' },
+          BASE_URL + '/chat/start',
+          { toUserId: user._id },
           { withCredentials: true }
         );
         dispatch(setActiveConversation(res.data.conversationId));
@@ -90,11 +91,6 @@ const ConnectionCard = ({user,sign}) => {
             <span>•</span>
             <span>{gender}</span>
           </div>
-        )}
-        {about && (
-          <p className="text-secondary-lighter text-sm mt-2 line-clamp-2 leading-relaxed">
-            {about}
-          </p>
         )}
       </div>
       

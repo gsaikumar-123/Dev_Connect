@@ -5,6 +5,8 @@ import { BASE_URL } from '../utils/constants';
 import axios from 'axios';
 import { removeUser } from '../utils/userSlice';
 import SearchBar from './SearchBar';
+import { addRequests } from '../utils/requestsSlice';
+import { setConversations } from '../utils/chatSlice';
 import { toggleTheme } from '../utils/themeSlice';
 
 const NavBar = () => {
@@ -16,8 +18,28 @@ const NavBar = () => {
   const requests = useSelector(store => store.requests);
   const conversations = useSelector(store => store.chat.conversations);
 
-  const pendingRequests = Array.isArray(requests) ? requests.filter(r => r.status === 'pending').length : 0;
+  const pendingRequests = Array.isArray(requests) ? requests.filter(r => r.status === 'interested').length : 0;
   const unreadChats = Array.isArray(conversations) ? conversations.reduce((sum, c) => sum + (c.unreadCount || 0), 0) : 0;
+
+  React.useEffect(() => {
+    if (user) {
+      axios.get(BASE_URL + '/user/requests', { withCredentials: true })
+        .then(res => {
+          if (res.data?.data) {
+            dispatch(addRequests(res.data.data));
+          }
+        })
+        .catch(err => console.error('Error fetching requests:', err));
+
+      axios.get(BASE_URL + '/chat/conversations', { withCredentials: true })
+        .then(res => {
+          if (res.data?.success && res.data.data) {
+            dispatch(setConversations(res.data.data));
+          }
+        })
+        .catch(err => console.error('Error fetching conversations:', err));
+    }
+  }, [user, dispatch]);
 
   const handleLogOut = async ()=>{
     await axios.post(BASE_URL+"/logout",{},{withCredentials:true});
@@ -219,7 +241,7 @@ const NavBar = () => {
               <Link 
                 to="/connections" 
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 text-secondary hover:text-primary hover:bg-accent rounded-lg font-medium transition-colors"
+                className="flex items-center gap-3 px-4 py-3 text-secondary dark:text-gray-100 hover:text-primary hover:bg-accent dark:hover:bg-secondary-light rounded-lg font-medium transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -274,7 +296,7 @@ const NavBar = () => {
               <Link 
                 to="/profile" 
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 text-secondary hover:text-primary hover:bg-accent rounded-lg font-medium transition-colors"
+                className="flex items-center gap-3 px-4 py-3 text-secondary dark:text-gray-100 hover:text-primary hover:bg-accent dark:hover:bg-secondary-light rounded-lg font-medium transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />

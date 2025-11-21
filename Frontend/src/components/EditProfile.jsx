@@ -6,12 +6,13 @@ import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 
 const EditProfile = ({ user }) => {
+  const defaultAbout = `Hey There I am ${user.firstName} ${user.lastName}. lets connect`;
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
   const [age, setAge] = useState(user.age || "");
   const [gender, setGender] = useState(user.gender || "");
-  const [about, setAbout] = useState(user.about || "");
+  const [about, setAbout] = useState(user.about || defaultAbout);
   const [skills,setSkills] = useState(user.skills || "");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -24,10 +25,29 @@ const EditProfile = ({ user }) => {
     setError("");
     setIsLoading(true);
     setIsSaved(false);
+
+    // Validation
+    if (!age || isNaN(age) || age > 100) {
+      setError("Please enter a valid age less than 100.");
+      setIsLoading(false);
+      return;
+    }
+    if (!gender) {
+      setError("Please select your gender.");
+      setIsLoading(false);
+      return;
+    }
+    const skillsArray = skills.split(',').map(s => s.trim()).filter(s => s.length > 0);
+    if (skillsArray.length < 2) {
+      setError("Please enter at least 2 skills, separated by commas.");
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const res = await axios.patch(
         BASE_URL+"/profile/edit",
-        { firstName, lastName, photoUrl, age, gender, about, skills },
+        { firstName, lastName, photoUrl, age: parseInt(age), gender, about, skills },
         { withCredentials: true }
       );
       dispatch(addUser(res?.data?.data));
@@ -83,10 +103,11 @@ const EditProfile = ({ user }) => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-secondary font-semibold mb-2 text-sm">
-                  Age
+                  Age <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="text"
+                  type="number"
+                  min="0"
                   className="input-field"
                   value={age}
                   onChange={(e) => setAge(e.target.value)}
@@ -96,7 +117,7 @@ const EditProfile = ({ user }) => {
 
               <div>
                 <label className="block text-secondary font-semibold mb-2 text-sm">
-                  Gender
+                  Gender <span className="text-red-500">*</span>
                 </label>
                 <select
                   className="input-field"
@@ -145,7 +166,7 @@ const EditProfile = ({ user }) => {
 
             <div>
               <label className="block text-secondary font-semibold mb-2 text-sm">
-                Skills
+                Skills <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -158,7 +179,7 @@ const EditProfile = ({ user }) => {
                 <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                 </svg>
-                Separate skills with commas
+                Separate skills with commas (at least 2 required)
               </p>
             </div>
 
@@ -171,7 +192,7 @@ const EditProfile = ({ user }) => {
             <button 
               className="btn-primary w-full flex items-center justify-center gap-2" 
               onClick={saveProfile}
-              disabled={isLoading || !firstName || !lastName}
+              disabled={isLoading || !firstName || !lastName || !age || !gender || skills.split(',').map(s => s.trim()).filter(s => s.length > 0).length < 2}
             >
               {isLoading ? (
                 <>

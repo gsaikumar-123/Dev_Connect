@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, { useEffect } from 'react'
 import { BASE_URL } from '../utils/constants'
 import { useDispatch, useSelector } from 'react-redux'
-import { addFeed } from '../utils/feedSlice'
+import { addFeed, appendFeed } from '../utils/feedSlice'
 import UserCard from './UserCard'
 
 
@@ -11,30 +11,48 @@ const Feed = () => {
   const feed = useSelector((store)=>(store.feed ?? []));
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = React.useState(true);
+  const [hasMore, setHasMore] = React.useState(true);
+  const [isLoadingMore, setIsLoadingMore] = React.useState(false);
+  const currentPageRef = React.useRef(1);
 
-  const getFeed = async()=>{
-    setIsLoading(true);
-    if(feed.length>0){
-      setIsLoading(false);
-      return;
-    }
+  const getFeed = async(pageNum, append = false)=>{
+    if (!append) setIsLoading(true);
+    else setIsLoadingMore(true);
     try{
-      const res = await axios.get(BASE_URL+"/user/feed",{withCredentials:true});
-      dispatch(addFeed(res?.data?.data));
+      const res = await axios.get(BASE_URL+"/user/feed?page="+pageNum+"&limit=20",{withCredentials:true});
+      const newUsers = res?.data?.data || [];
+      if (append) {
+        dispatch(appendFeed(newUsers));
+        currentPageRef.current = pageNum;
+      } else {
+        dispatch(addFeed(newUsers));
+      }
+      if (newUsers.length < 20) {
+        setHasMore(false);
+      }
     } 
     catch(err){
       console.log(err?.response?.data);
+      setHasMore(false);
     }
     finally{
-      setIsLoading(false);
+      if (!append) setIsLoading(false);
+      else setIsLoadingMore(false);
     }
   };
 
   useEffect(()=>{
-    getFeed();
+    getFeed(1);
   },[]);
 
-  if(isLoading) return (
+  useEffect(() => {
+    if (feed.length <= 10 && hasMore && !isLoading && !isLoadingMore) {
+      const nextPage = currentPageRef.current + 1;
+      getFeed(nextPage, true);
+    }
+  }, [feed.length, hasMore, isLoading, isLoadingMore]);
+
+  if(isLoading && feed.length === 0) return (
     <div className='flex justify-center py-12 px-4'>
       <div className="card-modern overflow-hidden w-full max-w-md mx-auto">
         <div className="skeleton h-80 w-full rounded-none"></div>

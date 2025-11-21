@@ -75,14 +75,34 @@ userRouter.get('/user/:id', userAuth, async (req, res) => {
     try {
         const { id } = req.params;
         if (!id) return res.status(400).json({ success: false, message: 'User id required' });
-        if (id === req.user._id.toString()) {
+        const loggedInUserId = req.user._id.toString();
+        if (id === loggedInUserId) {
             // return current user sanitized
             const { firstName, lastName, photoUrl, about, skills, gender, age } = req.user;
-            return res.json({ success: true, data: { _id: req.user._id, firstName, lastName, photoUrl, about, skills, gender, age, isSelf: true } });
+            return res.json({ success: true, data: { _id: req.user._id, firstName, lastName, photoUrl, about, skills, gender, age, isSelf: true, connectionStatus: { isConnected: false, requestStatus: null } } });
         }
         const other = await User.findById(id).select('firstName lastName photoUrl about skills gender age');
         if (!other) return res.status(404).json({ success: false, message: 'User not found' });
-        res.json({ success: true, data: other });
+
+        // Check connection status
+        const connectionRequest = await ConnectionRequest.findOne({
+            $or: [
+                { fromUserId: loggedInUserId, toUserId: id },
+                { fromUserId: id, toUserId: loggedInUserId }
+            ]
+        });
+
+        let connectionStatus = { isConnected: false, requestStatus: null, sentBy: null };
+        if (connectionRequest) {
+            if (connectionRequest.status === 'accepted') {
+                connectionStatus.isConnected = true;
+            } else {
+                connectionStatus.requestStatus = connectionRequest.status;
+                connectionStatus.sentBy = connectionRequest.fromUserId.toString() === loggedInUserId ? 'me' : 'them';
+            }
+        }
+
+        res.json({ success: true, data: { ...other.toObject(), connectionStatus } });
     } catch (err) {
         res.status(500).json({ success: false, message: 'Error fetching user: ' + err.message });
     }
@@ -162,6 +182,7 @@ userRouter.get("/user/feed",userAuth,async(req,res)=>{
             hideUsersFromFeed.add(row.fromUserId);
             hideUsersFromFeed.add(row.toUserId);
         });
+        hideUsersFromFeed.add(loggedInUser._id);
 
         const users = await User.find({
             _id : {

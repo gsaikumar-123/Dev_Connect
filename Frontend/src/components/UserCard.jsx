@@ -39,8 +39,8 @@ const UserCard = ({ user }) => {
     setIsCreatingChat(true);
     try {
       const res = await axios.post(
-        BASE_URL + '/chat/send',
-        { toUserId: user._id, text: '👋' },
+        BASE_URL + '/chat/start',
+        { toUserId: user._id },
         { withCredentials: true }
       );
       dispatch(setActiveConversation(res.data.conversationId));

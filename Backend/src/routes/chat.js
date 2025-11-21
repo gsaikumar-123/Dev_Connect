@@ -127,6 +127,31 @@ chatRouter.post('/chat/send', userAuth, async (req, res) => {
   }
 });
 
+chatRouter.post('/chat/start', userAuth, async (req, res) => {
+  try {
+    const fromUserId = req.user._id;
+    const { toUserId } = req.body;
+
+    if (!toUserId) {
+      return res.status(400).json({ success: false, message: 'toUserId required' });
+    }
+
+    const pairKey = getPairKey(fromUserId, toUserId);
+
+    let conversation = await Conversation.findOne({ pairKey });
+    if (!conversation) {
+      conversation = await Conversation.create({
+        participants: [fromUserId, toUserId],
+        pairKey
+      });
+    }
+
+    res.status(201).json({ success: true, conversationId: conversation._id });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Error starting chat: ' + err.message });
+  }
+});
+
 chatRouter.post('/chat/read', userAuth, async (req, res) => {
   try {
     const { conversationId } = req.body;
