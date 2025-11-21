@@ -116,7 +116,7 @@ const ChatWindow = ({ conversationId, messages, typing, onBack, isMobile }) => {
               (new Date(m.sentAt).getTime() - new Date(messages[idx - 1].sentAt).getTime()) > 300000;
             
             return (
-              <div key={m._id}>
+              <div key={`${m._id}-${idx}`}>
                 {showTime && (
                   <div className="text-center text-xs text-secondary-lighter dark:text-gray-400 my-4">
                     {new Date(m.sentAt).toLocaleString('en-US', { 
@@ -127,20 +127,27 @@ const ChatWindow = ({ conversationId, messages, typing, onBack, isMobile }) => {
                     })}
                   </div>
                 )}
-                <div className={`flex ${isOwn ? 'justify-end' : 'justify-start'} mb-1`}>
-                  <div className={`max-w-[75%] sm:max-w-md px-4 py-2.5 rounded-2xl shadow-sm ${
+                <div className={`flex ${isOwn ? 'justify-end' : 'justify-start'} mb-2`}>
+                  <div className={`max-w-[75%] sm:max-w-md px-4 py-3 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 ${
                     isOwn 
                       ? 'bg-primary text-white rounded-br-md' 
                       : 'bg-white dark:bg-secondary-light text-secondary dark:text-gray-100 border border-gray-100 dark:border-secondary-light rounded-bl-md'
                   }`}>
                     {m.isDeleted ? (
-                      <span className="italic opacity-60 text-sm">Message deleted</span>
+                      <span className="text-sm italic text-gray-500 dark:text-gray-400 line-through">This message was deleted</span>
                     ) : (
                       <>
                         {m.text && <div className="text-sm leading-relaxed break-words whitespace-pre-wrap">{m.text}</div>}
                         {m.attachments?.map((a, idx) => (
-                          <div key={idx} className="mt-2 text-xs opacity-75">📎 {a.fileName || 'Attachment'}</div>
+                          <div key={idx} className="mt-2 p-2 bg-gray-100 dark:bg-gray-600 rounded-lg text-xs">
+                            <span className="flex items-center gap-1">
+                              📎 <span className="font-medium">{a.fileName || 'Attachment'}</span>
+                            </span>
+                          </div>
                         ))}
+                        <span className={`text-xs opacity-60 mt-1 block ${isOwn ? 'text-right text-white/70' : 'text-right text-secondary-lighter dark:text-gray-400'}`}>
+                          {new Date(m.sentAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                        </span>
                       </>
                     )}
                   </div>

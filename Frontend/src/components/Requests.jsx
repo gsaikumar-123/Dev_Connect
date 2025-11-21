@@ -81,7 +81,7 @@ const Requests = () => {
       
       <div className="space-y-3 sm:space-y-4">
         {requests.map((request, index) => (
-          <div key={request._id} style={{animationDelay: `${index * 50}ms`}} className="animate-fade-in">
+          <div key={`${request._id}-${index}`} style={{animationDelay: `${index * 50}ms`}} className="animate-fade-in">
             <ConnectionCard user={request} sign={1} />
           </div>
         ))}

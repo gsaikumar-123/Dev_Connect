@@ -19,7 +19,7 @@ const NavBar = () => {
   const conversations = useSelector(store => store.chat.conversations);
 
   const pendingRequests = Array.isArray(requests) ? requests.filter(r => r.status === 'interested').length : 0;
-  const unreadChats = Array.isArray(conversations) ? conversations.reduce((sum, c) => sum + (c.unreadCount || 0), 0) : 0;
+  const unreadChats = Array.isArray(conversations) ? conversations.filter(c => (c.unreadCount || 0) > 0).length : 0;
 
   React.useEffect(() => {
     if (user) {

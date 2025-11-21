@@ -19,14 +19,16 @@ const ConversationList = ({ conversations, activeConversationId, onSelect }) => 
 
   return (
     <div className="overflow-y-auto flex-1">
-      {conversations.map(c => {
+      {conversations.map((c, index) => {
         const otherUser = c.otherUser || { firstName: 'User', lastName: '', photoUrl: '' };
-        const lastMessagePreview = c.lastMessage?.text || (c.lastMessage?.messageType === 'attachment' ? '📎 Attachment' : 'Start chatting');
+        const lastMessagePreview = c.unreadCount > 0 
+          ? `${c.unreadCount > 9 ? '9+' : c.unreadCount} new message${c.unreadCount > 1 ? 's' : ''}` 
+          : (c.lastMessage?.text || (c.lastMessage?.messageType === 'attachment' ? '📎 Attachment' : 'Start chatting'));
         const isActive = c._id === activeConversationId;
         
         return (
           <button
-            key={c._id}
+            key={`${c._id}-${index}`}
             onClick={() => onSelect(c._id)}
             className={`w-full text-left px-4 py-3 flex items-center gap-3 transition-colors border-b border-gray-50 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 ${
               isActive ? 'bg-accent dark:bg-gray-700 border-l-4 border-l-primary' : ''
@@ -38,11 +40,6 @@ const ConversationList = ({ conversations, activeConversationId, onSelect }) => 
                 alt={`${otherUser.firstName} ${otherUser.lastName}`}
                 className="w-14 h-14 rounded-full object-cover ring-2 ring-white dark:ring-gray-700 shadow-sm"
               />
-              {c.unreadCount > 0 && (
-                <div className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-white rounded-full flex items-center justify-center text-xs font-semibold shadow-lg">
-                  {c.unreadCount > 9 ? '9+' : c.unreadCount}
-                </div>
-              )}
             </div>
             <div className="flex-1 min-w-0 py-1">
               <div className="flex items-center justify-between mb-1">

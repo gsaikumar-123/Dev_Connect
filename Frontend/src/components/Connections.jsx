@@ -77,7 +77,7 @@ const Connections = () => {
       
       <div className="space-y-3 sm:space-y-4">
         {connections.map((connection, index) => (
-          <div key={connection._id} style={{animationDelay: `${index * 50}ms`}} className="animate-fade-in">
+          <div key={`${connection._id}-${index}`} style={{animationDelay: `${index * 50}ms`}} className="animate-fade-in">
             <ConnectionCard user={connection} />
           </div>
         ))}
