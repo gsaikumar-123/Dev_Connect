@@ -13,7 +13,7 @@ const EditProfile = ({ user }) => {
   const [age, setAge] = useState(user.age || "");
   const [gender, setGender] = useState(user.gender || "");
   const [about, setAbout] = useState(user.about || defaultAbout);
-  const [skills,setSkills] = useState(user.skills || "");
+  const [skills,setSkills] = useState(Array.isArray(user.skills) ? user.skills.join(', ') : user.skills || "");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -47,7 +47,7 @@ const EditProfile = ({ user }) => {
     try {
       const res = await axios.patch(
         BASE_URL+"/profile/edit",
-        { firstName, lastName, photoUrl, age: parseInt(age), gender, about, skills },
+        { firstName, lastName, photoUrl, age: parseInt(age), gender, about, skills: skills.split(',').map(s => s.trim()).filter(s => s.length > 0) },
         { withCredentials: true }
       );
       dispatch(addUser(res?.data?.data));
@@ -232,7 +232,7 @@ const EditProfile = ({ user }) => {
               <p className="text-secondary-lighter text-sm font-semibold text-center dark:text-gray-300">Live Preview</p>
             </div>
             <UserCard
-              user={{ firstName, lastName, about, photoUrl, skills, gender, age }}
+              user={{ firstName, lastName, about, photoUrl, skills: skills.split(',').map(s => s.trim()).filter(s => s.length > 0), gender, age }}
             />
           </div>
         </div>

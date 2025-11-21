@@ -22,7 +22,7 @@ function App() {
             <Route path="/user/feed" element = {<Feed/>}/>
             <Route path="/login" element = {<Login/>}/>
             <Route path="/profile" element = {<Profile/>}/>
-            <Route path="/user/:id" element={<UserProfilePage/>}/>
+            <Route path="/user/profile" element={<UserProfilePage/>}/>
             <Route path="/connections" element = {<Connections/>}/>
             <Route path="/requests" element = {<Requests/>}/>
             <Route path="/search/:query" element = {<SearchResults/>}/>

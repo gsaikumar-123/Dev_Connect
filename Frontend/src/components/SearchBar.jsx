@@ -70,7 +70,7 @@ const SearchBar = () => {
   };
 
   const handleResultClick = (user) => {
-    navigate('/user/' + user._id);
+    navigate('/user/profile', { state: { userId: user._id } });
     setQuery('');
     setShowResults(false);
     setResults([]);

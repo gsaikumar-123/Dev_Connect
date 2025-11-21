@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { BASE_URL } from '../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,7 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import UserProfileModal from './UserProfileModal';
 
 const UserProfilePage = () => {
-  const { id } = useParams();
+  const location = useLocation();
+  const userId = location.state?.userId;
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -21,14 +22,19 @@ const UserProfilePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const connections = useSelector(store => store.connections) || [];
-  const isConnected = user?.connectionStatus?.isConnected || connections.some(c => c._id === id);
+  const isConnected = user?.connectionStatus?.isConnected || connections.some(c => c._id === userId);
   const requestStatus = user?.connectionStatus?.requestStatus;
   const sentBy = user?.connectionStatus?.sentBy;
 
   useEffect(() => {
+    if (!userId) {
+      setError('User ID not provided');
+      setLoading(false);
+      return;
+    }
     const fetchUser = async () => {
       try {
-        const res = await axios.get(BASE_URL + '/user/' + id, { withCredentials: true });
+        const res = await axios.get(BASE_URL + '/user/' + userId, { withCredentials: true });
         if (res.data.success) {
           setUser(res.data.data);
         } else {
@@ -41,7 +47,7 @@ const UserProfilePage = () => {
       }
     };
     fetchUser();
-  }, [id]);
+  }, [userId]);
 
   const handleSendRequest = async (status, toUserId) => {
     setIsLoading(true);
@@ -81,13 +87,13 @@ const UserProfilePage = () => {
   };
 
   if (loading) {
-    return <div className="p-6 text-center text-secondary-lighter">Loading profile...</div>;
+    return <div className="p-6 text-center text-secondary-lighter dark:text-gray-300">Loading profile...</div>;
   }
   if (error) {
-    return <div className="p-6 text-center text-red-600">{error}</div>;
+    return <div className="p-6 text-center text-red-600 dark:text-red-400">{error}</div>;
   }
   if (!user) {
-    return <div className="p-6 text-center text-secondary-lighter">User not found</div>;
+    return <div className="p-6 text-center text-secondary-lighter dark:text-gray-300">User not found</div>;
   }
 
   const { firstName, lastName, about, photoUrl, age, gender, skills } = user;
@@ -113,11 +119,11 @@ const UserProfilePage = () => {
 
           <div className="p-6">
             <div className="mb-4">
-              <h2 className="text-2xl font-bold text-secondary mb-1">
+              <h2 className="text-2xl font-bold text-secondary mb-1 dark:text-gray-100">
                 {firstName} {lastName}
               </h2>
               {age && gender && (
-                <div className="flex items-center gap-2 text-secondary-lighter text-sm font-medium">
+                <div className="flex items-center gap-2 text-secondary-lighter text-sm font-medium dark:text-gray-300">
                   <span className="flex items-center gap-1">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -131,13 +137,13 @@ const UserProfilePage = () => {
             </div>
 
             {about && (
-              <p className="text-secondary-lighter leading-relaxed mb-4 line-clamp-3">
+              <p className="text-secondary-lighter leading-relaxed mb-4 line-clamp-3 dark:text-gray-300">
                 {about}
               </p>
             )}
             {skillsArray.length > 0 && (
               <div className="mb-6">
-                <h3 className="text-xs font-semibold text-secondary-lighter uppercase tracking-wide mb-2">Skills</h3>
+                <h3 className="text-xs font-semibold text-secondary-lighter uppercase tracking-wide mb-2 dark:text-gray-300">Skills</h3>
                 <div className="flex flex-wrap gap-2">
                   {skillsArray.slice(0, 5).map((skill, index) => (
                     <span
@@ -148,7 +154,7 @@ const UserProfilePage = () => {
                     </span>
                   ))}
                   {skillsArray.length > 5 && (
-                    <span className="px-3 py-1.5 bg-gray-100 text-secondary-lighter text-sm font-medium rounded-full">
+                    <span className="px-3 py-1.5 bg-gray-100 text-secondary-lighter text-sm font-medium rounded-full dark:bg-gray-700 dark:text-gray-300">
                       +{skillsArray.length - 5} more
                     </span>
                   )}
