@@ -3,11 +3,13 @@
 
 # Dev\_Connect
 
-## 🌐 Overview
+## Overview
 
-**Dev\_Connect** is a full-stack social networking application designed for developers and professionals to connect. It enables users to create and manage profiles, send and review connection requests, explore a feed of unconnected users, and maintain a network of accepted connections.
+**Dev_Connect** is a modern, full-stack social networking platform built specifically for developers and tech professionals to discover, connect, and collaborate. Think of it as a networking app tailored for the developer community—where coders can find like-minded professionals, build meaningful connections, and engage in real-time conversations.
 
-The backend delivers a robust REST API, while the frontend—built with **React** and **Tailwind CSS**—offers a responsive and intuitive user interface.
+The application features a **powerful backend** built with Node.js, Express, and MongoDB, providing a robust REST API with WebSocket support for real-time features. The **sleek frontend** leverages React, Redux Toolkit, and Tailwind CSS to deliver a responsive, intuitive, and visually appealing user experience with full dark mode support.
+
+With advanced features like Trie-based search, intelligent connection matching, real-time messaging, and a mobile-first design, Dev_Connect makes professional networking seamless and enjoyable for developers at all levels.
 
 ---
 
@@ -39,9 +41,6 @@ The backend delivers a robust REST API, while the frontend—built with **React*
 ### 💬 Real-time Chat
 * WebSocket-powered messaging
 * Conversation management
-* Message deletion and read receipts
-* Typing indicators
-* File attachment support
 
 ### 🎨 User Interface
 * Responsive design with Tailwind CSS
