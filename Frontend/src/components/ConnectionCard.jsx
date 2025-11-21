@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { setActiveConversation } from '../utils/chatSlice';
 import { removeConnectionById } from '../utils/connectionsSlice';
 import UserProfileModal from './UserProfileModal';
+import ConfirmDialog from './ConfirmDialog';
 
 const ConnectionCard = ({user,sign}) => {
     const {firstName, lastName, gender, photoUrl, age, about} = user || user.fromUserId;
@@ -16,6 +17,7 @@ const ConnectionCard = ({user,sign}) => {
     const [actionType, setActionType] = React.useState(null);
     const [showModal, setShowModal] = React.useState(false);
     const [isCreatingChat, setIsCreatingChat] = React.useState(false);
+    const [showConfirmDialog, setShowConfirmDialog] = React.useState(false);
     
     const handleRequest = async (status,_id)=>{
         setIsLoading(true);
@@ -159,17 +161,7 @@ const ConnectionCard = ({user,sign}) => {
             )}
           </button>
           <button
-            onClick={async () => {
-              if (!window.confirm('Remove this connection?')) return;
-              try {
-                const res = await axios.delete(BASE_URL + '/request/connection/remove/' + user._id, { withCredentials: true });
-                if(res.data?.success){
-                  dispatch(removeConnectionById(user._id));
-                }
-              } catch (err) {
-                console.error('Error removing connection', err);
-              }
-            }}
+            onClick={() => setShowConfirmDialog(true)}
             className="btn-secondary px-5 py-2.5 flex items-center justify-center gap-2 flex-1 sm:flex-initial"
             aria-label="Unfriend user"
           >
@@ -182,6 +174,22 @@ const ConnectionCard = ({user,sign}) => {
       )}
     </div>
     <UserProfileModal user={user} isOpen={showModal} onClose={() => setShowModal(false)} />
+    <ConfirmDialog
+      isOpen={showConfirmDialog}
+      onConfirm={async () => {
+        setShowConfirmDialog(false);
+        try {
+          const res = await axios.delete(BASE_URL + '/connection/remove/' + user._id, { withCredentials: true });
+          if(res.data?.success){
+            dispatch(removeConnectionById(user._id));
+          }
+        } catch (err) {
+          console.error('Error removing connection', err);
+        }
+      }}
+      onCancel={() => setShowConfirmDialog(false)}
+      message="Remove this connection?"
+    />
     </>
   )
 }
