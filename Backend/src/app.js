@@ -17,7 +17,7 @@ const userRouter = require("./routes/user");
 const chatRouter = require("./routes/chat");
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
 }));
@@ -54,7 +54,7 @@ connectDB()
         const server = http.createServer(app);
         const io = new Server(server, {
             cors: {
-                origin: "http://localhost:5173",
+                origin: process.env.FRONTEND_URL || "http://localhost:5173",
                 credentials: true
             }
         });
@@ -68,7 +68,7 @@ connectDB()
                 const cookies = parseCookies(socket.handshake.headers.cookie);
                 const token = cookies.token;
                 if (!token) return next(new Error('No auth token'));
-                const decoded = jwt.verify(token, "Sai@2304");
+                const decoded = jwt.verify(token, process.env.JWT_SECRET);
                 const user = await User.findById(decoded._id);
                 if (!user) return next(new Error('User not found'));
                 socket.user = user;
