@@ -81,11 +81,11 @@ const ChatPage = () => {
   // Mobile: show either list or chat window
   if (isMobile) {
     return (
-      <div className="h-[calc(100vh-4rem)] bg-white">
+      <div className="h-[calc(100vh-4rem)] bg-white dark:bg-gray-800">
         {!activeConversationId ? (
           <div className="h-full flex flex-col">
-            <div className="px-4 py-4 border-b bg-white sticky top-0 z-10">
-              <h1 className="text-2xl font-bold text-secondary">Messages</h1>
+            <div className="px-4 py-4 border-b bg-white dark:bg-gray-800 sticky top-0 z-10">
+              <h1 className="text-2xl font-bold text-secondary dark:text-gray-100">Messages</h1>
             </div>
             <ConversationList 
               conversations={conversations} 
@@ -108,11 +108,11 @@ const ChatPage = () => {
 
   // Desktop: show both side by side
   return (
-    <div className="h-[calc(100vh-4rem)] flex bg-white max-w-7xl mx-auto">
+    <div className="h-[calc(100vh-4rem)] flex bg-white dark:bg-gray-800 max-w-7xl mx-auto">
       {/* Conversations sidebar */}
-      <div className="w-full md:w-96 lg:w-[420px] border-r flex flex-col bg-white">
+      <div className="w-full md:w-96 lg:w-[420px] border-r flex flex-col bg-white dark:bg-gray-800">
         <div className="px-6 py-4 border-b">
-          <h1 className="text-2xl font-bold text-secondary">Messages</h1>
+          <h1 className="text-2xl font-bold text-secondary dark:text-gray-100">Messages</h1>
         </div>
         <ConversationList 
           conversations={conversations} 
@@ -122,7 +122,7 @@ const ChatPage = () => {
       </div>
       
       {/* Chat window */}
-      <div className="flex-1 flex flex-col bg-gray-50">
+      <div className="flex-1 flex flex-col bg-gray-50 dark:bg-gray-700">
         <ChatWindow 
           conversationId={activeConversationId} 
           messages={activeConversationId ? messages[activeConversationId] || [] : []}

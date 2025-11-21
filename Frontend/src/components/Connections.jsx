@@ -60,8 +60,8 @@ const Connections = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
           </div>
-          <h2 className='font-bold text-3xl text-secondary mb-3'>No Connections Yet</h2>
-          <p className='text-secondary-lighter text-lg leading-relaxed'>Start exploring and connecting with amazing developers!</p>
+          <h2 className='font-bold text-3xl text-secondary mb-3 dark:text-gray-100'>No Connections Yet</h2>
+          <p className='text-secondary-lighter text-lg leading-relaxed dark:text-gray-300'>Start exploring and connecting with amazing developers!</p>
         </div>
       </div>
     )
@@ -69,8 +69,8 @@ const Connections = () => {
   return (
     <div className='max-w-4xl mx-auto px-4 py-8 sm:py-12'>
       <div className="text-center mb-8 sm:mb-10">
-        <h1 className='font-bold text-3xl sm:text-4xl text-secondary mb-2'>Your Connections</h1>
-        <p className="text-secondary-lighter text-sm sm:text-base">
+        <h1 className='font-bold text-3xl sm:text-4xl text-secondary mb-2 dark:text-gray-100'>Your Connections</h1>
+        <p className="text-secondary-lighter text-sm sm:text-base dark:text-gray-300">
           {connections.length} {connections.length === 1 ? 'connection' : 'connections'}
         </p>
       </div>

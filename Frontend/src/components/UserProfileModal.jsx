@@ -38,7 +38,7 @@ const UserProfileModal = ({ user, isOpen, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 animate-fade-in" onClick={onClose}>
       <div 
-        className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-scale-in"
+        className="bg-white dark:bg-gray-800 rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-scale-in"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header with photo */}
@@ -51,10 +51,10 @@ const UserProfileModal = ({ user, isOpen, onClose }) => {
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center transition-colors shadow-lg"
+            className="absolute top-4 right-4 w-10 h-10 bg-white/90 hover:bg-white dark:bg-gray-700/90 dark:hover:bg-gray-700 rounded-full flex items-center justify-center transition-colors shadow-lg"
             aria-label="Close modal"
           >
-            <svg className="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-secondary dark:text-gray-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -81,8 +81,8 @@ const UserProfileModal = ({ user, isOpen, onClose }) => {
         <div className="p-6">
           {about && (
             <div className="mb-6">
-              <h3 className="text-xs font-semibold text-secondary-lighter uppercase tracking-wide mb-2">About</h3>
-              <p className="text-secondary-lighter leading-relaxed">
+              <h3 className="text-xs font-semibold text-secondary-lighter dark:text-gray-300 uppercase tracking-wide mb-2">About</h3>
+              <p className="text-secondary-lighter dark:text-gray-300 leading-relaxed">
                 {about}
               </p>
             </div>
@@ -90,7 +90,7 @@ const UserProfileModal = ({ user, isOpen, onClose }) => {
 
           {skillsArray.length > 0 && (
             <div className="mb-6">
-              <h3 className="text-xs font-semibold text-secondary-lighter uppercase tracking-wide mb-3">Skills</h3>
+              <h3 className="text-xs font-semibold text-secondary-lighter dark:text-gray-300 uppercase tracking-wide mb-3">Skills</h3>
               <div className="flex flex-wrap gap-2">
                 {skillsArray.map((skill, index) => (
                   <span 
@@ -105,7 +105,7 @@ const UserProfileModal = ({ user, isOpen, onClose }) => {
           )}
 
           {/* Action buttons */}
-          <div className="flex gap-3 pt-4 border-t border-gray-100">
+          <div className="flex gap-3 pt-4 border-t border-gray-100 dark:border-gray-600">
             <button
               onClick={handleStartChat}
               disabled={isCreatingChat}

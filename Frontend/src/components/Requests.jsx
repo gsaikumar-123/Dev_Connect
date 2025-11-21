@@ -64,8 +64,8 @@ const Requests = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
             </svg>
           </div>
-          <h2 className='font-bold text-3xl text-secondary mb-3'>No Requests</h2>
-          <p className='text-secondary-lighter text-lg leading-relaxed'>You have no pending connection requests at the moment</p>
+          <h2 className='font-bold text-3xl text-secondary mb-3 dark:text-gray-100'>No Requests</h2>
+          <p className='text-secondary-lighter text-lg leading-relaxed dark:text-gray-300'>You have no pending connection requests at the moment</p>
         </div>
       </div>
     )
@@ -73,8 +73,8 @@ const Requests = () => {
   return (
     <div className='max-w-4xl mx-auto px-4 py-8 sm:py-12'>
       <div className="text-center mb-8 sm:mb-10">
-        <h1 className='font-bold text-3xl sm:text-4xl text-secondary mb-2'>Connection Requests</h1>
-        <p className="text-secondary-lighter text-sm sm:text-base">
+        <h1 className='font-bold text-3xl sm:text-4xl text-secondary mb-2 dark:text-gray-100'>Connection Requests</h1>
+        <p className="text-secondary-lighter text-sm sm:text-base dark:text-gray-300">
           {requests.length} pending {requests.length === 1 ? 'request' : 'requests'}
         </p>
       </div>

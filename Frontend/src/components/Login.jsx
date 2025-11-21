@@ -73,10 +73,10 @@ const Login = () => {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-secondary mb-2">
+          <h1 className="text-4xl font-bold text-secondary mb-2 dark:text-gray-100">
             {isLogin ? "Welcome Back" : "Join DevConnect"}
           </h1>
-          <p className="text-secondary-lighter">
+          <p className="text-secondary-lighter dark:text-gray-300">
             {isLogin ? "Sign in to continue your journey" : "Start connecting with developers"}
           </p>
         </div>
@@ -86,7 +86,7 @@ const Login = () => {
             {!isLogin && (
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div>
-                  <label className="block text-secondary font-semibold mb-2 text-sm">
+                  <label className="block text-secondary font-semibold mb-2 text-sm dark:text-gray-100">
                     First Name
                   </label>
                   <input 
@@ -100,7 +100,7 @@ const Login = () => {
                 </div>
 
                 <div>
-                  <label className="block text-secondary font-semibold mb-2 text-sm">
+                  <label className="block text-secondary font-semibold mb-2 text-sm dark:text-gray-100">
                     Last Name
                   </label>
                   <input 
@@ -117,7 +117,7 @@ const Login = () => {
 
             <div className="space-y-5">
               <div>
-                <label className="block text-secondary font-semibold mb-2 text-sm">
+                <label className="block text-secondary font-semibold mb-2 text-sm dark:text-gray-100">
                   Email Address
                 </label>
                 <div className="relative">
@@ -138,7 +138,7 @@ const Login = () => {
               </div>
 
               <div>
-                <label className="block text-secondary font-semibold mb-2 text-sm">
+                <label className="block text-secondary font-semibold mb-2 text-sm dark:text-gray-100">
                   Password
                 </label>
                 <div className="relative">
@@ -177,8 +177,8 @@ const Login = () => {
             </div>
 
             {error && (
-              <div className="mt-5 p-4 bg-red-50 border border-red-100 rounded-lg">
-                <p className='text-red-600 text-sm font-medium text-center'>{error}</p>
+              <div className="mt-5 p-4 bg-red-50 border border-red-100 rounded-lg dark:bg-red-900/20 dark:border-red-800">
+                <p className='text-red-600 text-sm font-medium text-center dark:text-red-400'>{error}</p>
               </div>
             )}
 
@@ -198,7 +198,7 @@ const Login = () => {
             </button>
 
             <div className="mt-6 text-center">
-                <p className="text-secondary-lighter text-sm">
+                <p className="text-secondary-lighter text-sm dark:text-gray-300">
                   {isLogin ? "Don't have an account?" : "Already have an account?"}
                   {" "}
                   <button 
@@ -212,7 +212,7 @@ const Login = () => {
         </div>
 
         {/* Footer Text */}
-        <p className="text-center text-secondary-lighter text-xs mt-6">
+        <p className="text-center text-secondary-lighter text-xs mt-6 dark:text-gray-400">
           By continuing, you agree to DevConnect's Terms of Service and Privacy Policy
         </p>
       </div>

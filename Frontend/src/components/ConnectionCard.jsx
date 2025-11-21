@@ -77,11 +77,11 @@ const ConnectionCard = ({user,sign}) => {
       </div>
       
       <div className='flex-1 text-center sm:text-left min-w-0 cursor-pointer' onClick={() => setShowModal(true)}>
-        <h3 className='text-xl font-bold text-secondary truncate mb-1'>
+        <h3 className='text-xl font-bold text-secondary dark:text-gray-100 truncate mb-1'>
           {firstName} {lastName}
         </h3>
         {age && gender && (
-          <div className="flex items-center justify-center sm:justify-start gap-2 text-secondary-lighter text-sm font-medium">
+          <div className="flex items-center justify-center sm:justify-start gap-2 text-secondary-lighter dark:text-gray-300 text-sm font-medium">
             <span className="flex items-center gap-1">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />

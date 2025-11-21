@@ -127,7 +127,7 @@ const SearchBar = () => {
             onKeyDown={handleKeyDown}
           onFocus={() => query && setShowResults(true)}
           placeholder="Search developers..."
-          className="w-full pl-10 pr-10 py-2.5 bg-accent border border-gray-200 rounded-lg text-secondary placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+          className="w-full pl-10 pr-10 py-2.5 bg-accent dark:bg-secondary border border-gray-200 dark:border-secondary-light rounded-lg text-secondary dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
           aria-label="Search users"
         />
 
@@ -146,7 +146,7 @@ const SearchBar = () => {
 
       {/* Search Results Dropdown */}
       {showResults && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-soft border border-gray-100 max-h-96 overflow-y-auto z-50 animate-fade-in">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-secondary rounded-xl shadow-soft border border-gray-100 dark:border-secondary-light max-h-96 overflow-y-auto z-50 animate-fade-in">
           {error && (
             <div className="p-4 text-center">
               <p className="text-red-600 text-sm">{error}</p>
@@ -165,7 +165,7 @@ const SearchBar = () => {
 
           {!error && results.length > 0 && (
             <div className="py-2">
-              <div className="px-4 py-2 border-b border-gray-100">
+              <div className="px-4 py-2 border-b border-gray-100 dark:border-secondary-light">
                 <p className="text-xs font-semibold text-secondary-lighter uppercase tracking-wide">
                   {results.length} {results.length === 1 ? 'result' : 'results'}
                 </p>
@@ -175,7 +175,7 @@ const SearchBar = () => {
                 <button
                   key={user._id}
                   onClick={() => handleResultClick(user)}
-                  className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent transition-colors group"
+                  className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent dark:hover:bg-secondary-light transition-colors group"
                 >
                   <img
                     src={user.photoUrl}
@@ -184,11 +184,11 @@ const SearchBar = () => {
                   />
                   
                   <div className="flex-1 text-left min-w-0">
-                    <h4 className="text-secondary font-semibold truncate group-hover:text-primary transition-colors">
+                    <h4 className="text-secondary dark:text-gray-100 font-semibold truncate group-hover:text-primary transition-colors">
                       {user.firstName} {user.lastName}
                     </h4>
                     {user.age && user.gender && (
-                      <p className="text-secondary-lighter text-sm">
+                      <p className="text-secondary-lighter dark:text-gray-300 text-sm">
                         {user.age} years • {user.gender}
                       </p>
                     )}
@@ -216,7 +216,7 @@ const SearchBar = () => {
               
                 {/* View All Results Button */}
                 {results.length >= 5 && (
-                  <div className="px-4 py-3 border-t border-gray-100">
+                  <div className="px-4 py-3 border-t border-gray-100 dark:border-secondary-light">
                     <button
                       onClick={handleViewAllResults}
                       className="w-full text-center text-primary hover:text-primary-dark font-semibold py-2 hover:bg-primary/5 rounded-lg transition-colors flex items-center justify-center gap-2"

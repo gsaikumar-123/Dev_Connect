@@ -70,7 +70,7 @@ const UserCard = ({ user }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
         {/* Floating badge on image */}
         {skillsArray.length > 0 && (
-          <div className="absolute top-4 right-4 px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full text-xs font-semibold text-primary shadow-lg">
+          <div className="absolute top-4 right-4 px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full text-xs font-semibold text-primary shadow-lg dark:bg-black/70">
             {skillsArray.length} {skillsArray.length === 1 ? 'Skill' : 'Skills'}
           </div>
         )}
@@ -78,11 +78,11 @@ const UserCard = ({ user }) => {
       
       <div className="p-6">
         <div className="mb-4">
-          <h2 className="text-2xl font-bold text-secondary mb-1">
+          <h2 className="text-2xl font-bold text-secondary mb-1 dark:text-gray-100">
             {firstName} {lastName}
           </h2>
           {age && gender && (
-            <div className="flex items-center gap-2 text-secondary-lighter text-sm font-medium">
+            <div className="flex items-center gap-2 text-secondary-lighter text-sm font-medium dark:text-gray-300">
               <span className="flex items-center gap-1">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -96,13 +96,13 @@ const UserCard = ({ user }) => {
         </div>
 
         {about && (
-          <p className="text-secondary-lighter leading-relaxed mb-4 line-clamp-3">
+          <p className="text-secondary-lighter leading-relaxed mb-4 line-clamp-3 dark:text-gray-300">
             {about}
           </p>
         )}
         {skillsArray.length > 0 && (
           <div className="mb-6">
-            <h3 className="text-xs font-semibold text-secondary-lighter uppercase tracking-wide mb-2">Skills</h3>
+            <h3 className="text-xs font-semibold text-secondary-lighter uppercase tracking-wide mb-2 dark:text-gray-300">Skills</h3>
             <div className="flex flex-wrap gap-2">
               {skillsArray.slice(0, 5).map((skill, index) => (
                 <span 
@@ -113,7 +113,7 @@ const UserCard = ({ user }) => {
                 </span>
               ))}
               {skillsArray.length > 5 && (
-                <span className="px-3 py-1.5 bg-gray-100 text-secondary-lighter text-sm font-medium rounded-full">
+                <span className="px-3 py-1.5 bg-gray-100 text-secondary-lighter text-sm font-medium rounded-full dark:bg-gray-700 dark:text-gray-300">
                   +{skillsArray.length - 5} more
                 </span>
               )}

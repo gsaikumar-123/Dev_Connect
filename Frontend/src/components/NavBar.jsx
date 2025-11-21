@@ -78,7 +78,7 @@ const NavBar = () => {
               <div className="hidden md:flex items-center gap-6">
                 <Link 
                   to="/user/feed" 
-                  className="text-secondary-lighter hover:text-primary font-medium transition-colors px-3 py-2 rounded-lg hover:bg-accent"
+                  className="relative text-secondary-lighter dark:text-gray-300 hover:text-primary font-medium transition-colors px-3 py-2 rounded-lg hover:bg-accent dark:hover:bg-secondary-light"
                 >
                   Feed
                 </Link>

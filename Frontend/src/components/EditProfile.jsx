@@ -68,13 +68,13 @@ const EditProfile = ({ user }) => {
       <div className="flex flex-col lg:flex-row gap-8 justify-center">
         {/* Edit Form */}
         <div className="card-modern p-6 sm:p-8 flex-1 max-w-xl animate-fade-in">
-          <h2 className="text-2xl sm:text-3xl font-bold text-secondary mb-2">Edit Profile</h2>
-          <p className="text-secondary-lighter mb-6 sm:mb-8">Update your personal information</p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-secondary mb-2 dark:text-gray-100">Edit Profile</h2>
+          <p className="text-secondary-lighter mb-6 sm:mb-8 dark:text-gray-300">Update your personal information</p>
 
           <div className="space-y-5">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-secondary font-semibold mb-2 text-sm">
+                <label className="block text-secondary font-semibold mb-2 text-sm dark:text-gray-100">
                   First Name
                 </label>
                 <input
@@ -87,7 +87,7 @@ const EditProfile = ({ user }) => {
               </div>
 
               <div>
-                <label className="block text-secondary font-semibold mb-2 text-sm">
+                <label className="block text-secondary font-semibold mb-2 text-sm dark:text-gray-100">
                   Last Name
                 </label>
                 <input
@@ -102,7 +102,7 @@ const EditProfile = ({ user }) => {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-secondary font-semibold mb-2 text-sm">
+                <label className="block text-secondary font-semibold mb-2 text-sm dark:text-gray-100">
                   Age <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -116,7 +116,7 @@ const EditProfile = ({ user }) => {
               </div>
 
               <div>
-                <label className="block text-secondary font-semibold mb-2 text-sm">
+                <label className="block text-secondary font-semibold mb-2 text-sm dark:text-gray-100">
                   Gender <span className="text-red-500">*</span>
                 </label>
                 <select
@@ -133,7 +133,7 @@ const EditProfile = ({ user }) => {
             </div>
 
             <div>
-              <label className="block text-secondary font-semibold mb-2 text-sm">
+              <label className="block text-secondary font-semibold mb-2 text-sm dark:text-gray-100">
                 Photo URL
               </label>
               <input
@@ -147,10 +147,10 @@ const EditProfile = ({ user }) => {
 
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="block text-secondary font-semibold text-sm">
+                <label className="block text-secondary font-semibold text-sm dark:text-gray-100">
                   About
                 </label>
-                <span className="text-xs text-secondary-lighter">
+                <span className="text-xs text-secondary-lighter dark:text-gray-300">
                   {about.length}/500
                 </span>
               </div>
@@ -165,7 +165,7 @@ const EditProfile = ({ user }) => {
             </div>
 
             <div>
-              <label className="block text-secondary font-semibold mb-2 text-sm">
+              <label className="block text-secondary font-semibold mb-2 text-sm dark:text-gray-100">
                 Skills <span className="text-red-500">*</span>
               </label>
               <input
@@ -175,7 +175,7 @@ const EditProfile = ({ user }) => {
                 onChange={(e) => setSkills(e.target.value)}
                 placeholder="React, Node.js, Python, JavaScript"
               />
-              <p className="text-secondary-lighter text-xs mt-2 flex items-center gap-1">
+              <p className="text-secondary-lighter text-xs mt-2 flex items-center gap-1 dark:text-gray-300">
                 <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                 </svg>
@@ -184,8 +184,8 @@ const EditProfile = ({ user }) => {
             </div>
 
             {error && (
-              <div className="p-4 bg-red-50 border border-red-100 rounded-lg">
-                <p className="text-red-600 text-sm font-medium text-center">{error}</p>
+              <div className="p-4 bg-red-50 border border-red-100 rounded-lg dark:bg-red-900/20 dark:border-red-800">
+                <p className="text-red-600 text-sm font-medium text-center dark:text-red-400">{error}</p>
               </div>
             )}
 
@@ -229,7 +229,7 @@ const EditProfile = ({ user }) => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
               </svg>
-              <p className="text-secondary-lighter text-sm font-semibold text-center">Live Preview</p>
+              <p className="text-secondary-lighter text-sm font-semibold text-center dark:text-gray-300">Live Preview</p>
             </div>
             <UserCard
               user={{ firstName, lastName, about, photoUrl, skills, gender, age }}

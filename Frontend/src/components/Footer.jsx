@@ -3,15 +3,15 @@ import { Link } from 'react-router-dom'
 
 const Footer = () => {
   return (
-    <footer className="bg-white border-t border-gray-100 mt-auto">
+    <footer className="bg-white border-t border-gray-100 mt-auto dark:bg-gray-800 dark:border-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
           <div className="col-span-1 sm:col-span-2">
-            <h3 className="text-2xl font-bold text-secondary mb-3">
+            <h3 className="text-2xl font-bold text-secondary mb-3 dark:text-gray-100">
               <span className="text-primary">Dev</span>Connect
             </h3>
-            <p className="text-secondary-lighter text-sm leading-relaxed max-w-md mb-5">
+            <p className="text-secondary-lighter text-sm leading-relaxed max-w-md mb-5 dark:text-gray-300">
               Connect with developers worldwide. Build your network, share knowledge, 
               and grow together in the developer community.
             </p>
@@ -20,7 +20,7 @@ const Footer = () => {
                 href="https://github.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-accent-dark hover:bg-primary flex items-center justify-center text-secondary hover:text-white transition-all duration-200"
+                className="w-10 h-10 rounded-full bg-accent-dark hover:bg-primary flex items-center justify-center text-secondary hover:text-white transition-all duration-200 dark:bg-gray-700 dark:text-gray-100"
                 aria-label="GitHub"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -31,7 +31,7 @@ const Footer = () => {
                 href="https://twitter.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-accent-dark hover:bg-primary flex items-center justify-center text-secondary hover:text-white transition-all duration-200"
+                className="w-10 h-10 rounded-full bg-accent-dark hover:bg-primary flex items-center justify-center text-secondary hover:text-white transition-all duration-200 dark:bg-gray-700 dark:text-gray-100"
                 aria-label="Twitter"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -42,7 +42,7 @@ const Footer = () => {
                 href="https://linkedin.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-accent-dark hover:bg-primary flex items-center justify-center text-secondary hover:text-white transition-all duration-200"
+                className="w-10 h-10 rounded-full bg-accent-dark hover:bg-primary flex items-center justify-center text-secondary hover:text-white transition-all duration-200 dark:bg-gray-700 dark:text-gray-100"
                 aria-label="LinkedIn"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -54,25 +54,25 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-secondary font-semibold mb-4">Quick Links</h4>
+            <h4 className="text-secondary font-semibold mb-4 dark:text-gray-100">Quick Links</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/user/feed" className="text-secondary-lighter hover:text-primary transition-colors text-sm">
+                <Link to="/user/feed" className="text-secondary-lighter hover:text-primary transition-colors text-sm dark:text-gray-300">
                   Feed
                 </Link>
               </li>
               <li>
-                <Link to="/connections" className="text-secondary-lighter hover:text-primary transition-colors text-sm">
+                <Link to="/connections" className="text-secondary-lighter hover:text-primary transition-colors text-sm dark:text-gray-300">
                   Connections
                 </Link>
               </li>
               <li>
-                <Link to="/requests" className="text-secondary-lighter hover:text-primary transition-colors text-sm">
+                <Link to="/requests" className="text-secondary-lighter hover:text-primary transition-colors text-sm dark:text-gray-300">
                   Requests
                 </Link>
               </li>
               <li>
-                <Link to="/profile" className="text-secondary-lighter hover:text-primary transition-colors text-sm">
+                <Link to="/profile" className="text-secondary-lighter hover:text-primary transition-colors text-sm dark:text-gray-300">
                   Profile
                 </Link>
               </li>
@@ -81,25 +81,25 @@ const Footer = () => {
 
           {/* Resources */}
           <div>
-            <h4 className="text-secondary font-semibold mb-4">Resources</h4>
+            <h4 className="text-secondary font-semibold mb-4 dark:text-gray-100">Resources</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-secondary-lighter hover:text-primary transition-colors text-sm">
+                <a href="#" className="text-secondary-lighter hover:text-primary transition-colors text-sm dark:text-gray-300">
                   About Us
                 </a>
               </li>
               <li>
-                <a href="#" className="text-secondary-lighter hover:text-primary transition-colors text-sm">
+                <a href="#" className="text-secondary-lighter hover:text-primary transition-colors text-sm dark:text-gray-300">
                   Privacy Policy
                 </a>
               </li>
               <li>
-                <a href="#" className="text-secondary-lighter hover:text-primary transition-colors text-sm">
+                <a href="#" className="text-secondary-lighter hover:text-primary transition-colors text-sm dark:text-gray-300">
                   Terms of Service
                 </a>
               </li>
               <li>
-                <a href="#" className="text-secondary-lighter hover:text-primary transition-colors text-sm">
+                <a href="#" className="text-secondary-lighter hover:text-primary transition-colors text-sm dark:text-gray-300">
                   Help Center
                 </a>
               </li>
@@ -108,12 +108,12 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-gray-100">
+        <div className="pt-8 border-t border-gray-100 dark:border-gray-700">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-secondary-lighter text-sm text-center sm:text-left">
+            <p className="text-secondary-lighter text-sm text-center sm:text-left dark:text-gray-300">
               © {new Date().getFullYear()} DevConnect. All rights reserved.
             </p>
-            <p className="text-secondary-lighter text-sm flex items-center gap-1">
+            <p className="text-secondary-lighter text-sm flex items-center gap-1 dark:text-gray-300">
               Made with <span className="text-primary text-base">♥</span> for developers
             </p>
           </div>
